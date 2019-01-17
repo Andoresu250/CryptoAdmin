@@ -1,7 +1,6 @@
 package com.andoresu.cryptoadmin.core.sales;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.andoresu.cryptoadmin.client.ObserverResponse;
 import com.andoresu.cryptoadmin.client.ServiceGenerator;
@@ -16,17 +15,17 @@ import retrofit2.Response;
 
 import static com.andoresu.cryptoadmin.client.GsonBuilderUtils.getUserGson;
 
-public class SalesPresenter implements SalesContract.UserActionsListener{
+public class SalesPresenter implements SaleContract.UserActionsListener{
 
     String TAG = "CRYPTO_" + SalesPresenter.class.getSimpleName();
 
-    private final SalesContract.View chargesView;
+    private final SaleContract.View chargesView;
 
     private final Context context;
 
     private final SalesService chargesService;
 
-    public SalesPresenter(SalesContract.View chargesView, Context context) {
+    public SalesPresenter(SaleContract.View chargesView, Context context) {
         this.chargesView = chargesView;
         this.context = context;
         this.chargesService = ServiceGenerator.createService(SalesService.class, SecureData.getToken(), getUserGson());

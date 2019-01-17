@@ -8,6 +8,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -23,5 +24,8 @@ public interface UsersService {
 
     @PUT("users/{id}/deactivate")
     Observable<Response<ResponseBody>> deactivate(@Path("id") String id);
+
+    @DELETE("users/{id}")
+    Observable<Response<ResponseBody>> delete(@Path("id") String id);
 
 }

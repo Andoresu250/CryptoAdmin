@@ -1,6 +1,7 @@
 package com.andoresu.cryptoadmin.core.userdetail;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.andoresu.cryptoadmin.authorization.data.User;
 import com.andoresu.cryptoadmin.client.ObserverResponse;
@@ -61,6 +62,32 @@ public class UserDetailPresenter implements UserDetailContract.UserActionsListen
                         if(responseBodyResponse.isSuccessful()){
                             user.state = User.STATE_DEACTIVATED;
                             userDetailView.showUser(user);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        usersService.delete(user.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ObserverResponse<Response<ResponseBody>>(userDetailView, true) {
+                    boolean deleted = false;
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        if(deleted){
+                            userDetailView.backToUsers();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(Response<ResponseBody> responseBodyResponse) {
+                        super.onNext(responseBodyResponse);
+                        if(responseBodyResponse.isSuccessful()){
+                            deleted = true;
+                            Toast.makeText(context, "Usuario eliminado con exito", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

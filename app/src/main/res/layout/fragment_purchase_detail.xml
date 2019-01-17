@@ -7,7 +7,7 @@
     >
 
     <ScrollView
-        android:id="@+id/userDetailLayout"
+        android:id="@+id/purchaseDetailLayout"
         android:layout_margin="@dimen/activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,25 +15,40 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <include layout="@layout/content_user"
-                android:id="@+id/contentUserLayout"
-                />
             <include layout="@layout/content_person"
                 android:id="@+id/contentPersonLayout"
                 />
-
+            <include layout="@layout/content_purchase"
+                android:id="@+id/contentChargeLayout"
+                />
             <Button
-                android:id="@+id/changeStateButton"
+                android:id="@+id/selectPurchaseEvidenceButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:theme="@style/PrimaryButton"
+                android:text="@string/select_image"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_camera"
                 />
 
             <Button
-                android:id="@+id/deleteUserButton"
+                android:id="@+id/purchaseApproveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/PrimaryButton"
+                android:text="@string/approve"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_check"
+                />
+
+            <Button
+                android:id="@+id/purchaseDenyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/AlertButton"
-                android:text="@string/delete"
+                android:text="@string/deny"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_deny"
                 />
 
         </LinearLayout>

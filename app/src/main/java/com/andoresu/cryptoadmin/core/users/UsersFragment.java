@@ -66,6 +66,7 @@ public class UsersFragment extends BaseFragment implements UsersContract.View, S
         UsersFragment fragment = new UsersFragment();
         fragment.setArguments(args);
         fragment.setInteractionListener(interactionListener);
+        fragment.setTitle("Usuarios");
         return fragment;
     }
 

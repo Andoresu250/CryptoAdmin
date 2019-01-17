@@ -17,6 +17,8 @@ public class ErrorResponse implements Serializable{
 
     public String error;
     public String[] errors;
+    public String raw;
+
 
     public ErrorResponse(){}
 
@@ -59,6 +61,7 @@ public class ErrorResponse implements Serializable{
 //            e.printStackTrace();
             errorResponse = new ErrorResponse("Ha ocurrido un error en el servidor.", 0);
         }
+        errorResponse.raw = response;
         return errorResponse;
     }
 

@@ -65,6 +65,9 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
     @BindView(R.id.changeStateButton)
     Button changeStateButton;
 
+    @BindView(R.id.deleteUserButton)
+    Button deleteUserButton;
+
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.userDetailLayout)
@@ -74,15 +77,14 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
 
     private User user;
 
-    public UserDetailFragment(){
-        actionsListener = new UserDetailPresenter(this, getContext());
-    }
+    public UserDetailFragment(){}
 
     public static UserDetailFragment newInstance(User user) {
         Bundle args = new Bundle();
         UserDetailFragment fragment = new UserDetailFragment();
         fragment.setArguments(args);
         fragment.setUser(user);
+        fragment.setTitle("Detalle Usuario");
         return fragment;
     }
 
@@ -95,6 +97,7 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){}
+        actionsListener = new UserDetailPresenter(this, getContext());
     }
 
     @Nullable
@@ -171,6 +174,12 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
             changeStateButton.setText(R.string.activate_user);
             changeStateButton.setOnClickListener(view -> actionsListener.activateUser(user));
         }
+        deleteUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionsListener.deleteUser(user);
+            }
+        });
 
     }
 
@@ -178,5 +187,12 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
     public void showUser(User user) {
         this.user = user;
         setData();
+    }
+
+    @Override
+    public void backToUsers() {
+        if(getActivity() != null){
+            getActivity().onBackPressed();
+        }
     }
 }

@@ -1,44 +1,55 @@
-package com.andoresu.cryptoadmin.core.saledetail;
+package com.andoresu.cryptoadmin.core.purchasedetail;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.andoresu.cryptoadmin.client.ObserverResponse;
 import com.andoresu.cryptoadmin.client.ServiceGenerator;
-import com.andoresu.cryptoadmin.core.sales.SalesService;
-import com.andoresu.cryptoadmin.core.sales.data.Sale;
+import com.andoresu.cryptoadmin.core.purchase.PurchasesService;
+import com.andoresu.cryptoadmin.core.purchase.data.Purchase;
 import com.andoresu.cryptoadmin.security.SecureData;
+
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+import java.util.HashMap;
+
+import javax.security.auth.login.LoginException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 import static com.andoresu.cryptoadmin.client.GsonBuilderUtils.getUserGson;
+import static com.andoresu.cryptoadmin.utils.MyUtils.getPathFromURI;
 import static com.andoresu.cryptoadmin.utils.MyUtils.prepareFilePart;
+import static com.andoresu.cryptoadmin.utils.MyUtils.requestBodyFile;
 
-public class SaleDetailPresenter implements SaleDetailContract.UserActionsListener{
+public class PurchaseDetailPresenter implements PurchaseDetailContract.UserActionsListener{
 
-    String TAG = "CRYPTO_" + SaleDetailPresenter.class.getSimpleName();
+    String TAG = "CRYPTO_" + PurchaseDetailPresenter.class.getSimpleName();
 
-    private final SaleDetailContract.View chargeDetailView;
+    private final PurchaseDetailContract.View chargeDetailView;
 
     private final Context context;
 
-    private final SalesService chargesService;
+    private final PurchasesService chargesService;
 
-    public SaleDetailPresenter(SaleDetailContract.View chargeDetailView, Context context) {
+    public PurchaseDetailPresenter(PurchaseDetailContract.View chargeDetailView, Context context) {
         this.chargeDetailView = chargeDetailView;
         this.context = context;
-        this.chargesService = ServiceGenerator.createService(SalesService.class, SecureData.getToken(), getUserGson());
+        this.chargesService = ServiceGenerator.createService(PurchasesService.class, SecureData.getToken(), getUserGson());
     }
 
     @Override
-    public void approveSale(Sale charge, Uri fileUri) {
+    public void approvePurchase(Purchase charge, Uri fileUri) {
 
 
-        MultipartBody.Part body = prepareFilePart("sale[evidence]", fileUri, context);
+        MultipartBody.Part body = prepareFilePart("purchase[evidence]", fileUri, context);
 
         chargesService.approve(charge.id, body)
                 .subscribeOn(Schedulers.io())
@@ -48,8 +59,8 @@ public class SaleDetailPresenter implements SaleDetailContract.UserActionsListen
                     public void onNext(Response<ResponseBody> responseBodyResponse) {
                         super.onNext(responseBodyResponse);
                         if(responseBodyResponse.isSuccessful()){
-                            charge.state = Sale.STATE_APPROVED;
-                            chargeDetailView.showSale(charge);
+                            charge.state = Purchase.STATE_APPROVED;
+                            chargeDetailView.showPurchase(charge);
                         }
                     }
                 });
@@ -57,7 +68,7 @@ public class SaleDetailPresenter implements SaleDetailContract.UserActionsListen
     }
 
     @Override
-    public void denySale(Sale charge) {
+    public void denyPurchase(Purchase charge) {
         chargesService.deny(charge.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -66,8 +77,8 @@ public class SaleDetailPresenter implements SaleDetailContract.UserActionsListen
                     public void onNext(Response<ResponseBody> responseBodyResponse) {
                         super.onNext(responseBodyResponse);
                         if(responseBodyResponse.isSuccessful()){
-                            charge.state = Sale.STATE_DENIED;
-                            chargeDetailView.showSale(charge);
+                            charge.state = Purchase.STATE_DENIED;
+                            chargeDetailView.showPurchase(charge);
                         }
                     }
                 });

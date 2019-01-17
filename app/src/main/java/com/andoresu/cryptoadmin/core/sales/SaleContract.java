@@ -6,7 +6,7 @@ import com.andoresu.cryptoadmin.utils.BaseView;
 
 import java.util.Map;
 
-public interface SalesContract {
+public interface SaleContract {
     interface View extends BaseView {
 
         void showSales(SalesResponse salesResponse);

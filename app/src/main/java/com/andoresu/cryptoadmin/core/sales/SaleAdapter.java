@@ -67,7 +67,7 @@ public class SaleAdapter extends BaseRecyclerViewAdapter<Sale> {
         @BindViews({R.id.personIdentificationTextView, R.id.personIdentificationTypeTextView, R.id.personPhoneTextView,
                 R.id.callButton, R.id.personBalanceTextView, R.id.personIdentificationFrontTextView, R.id.personIdentificationFrontImageView,
                 R.id.personIdentificationBackTextView, R.id.personIdentificationBackImageView, R.id.personPublicReceiptTextView,
-                R.id.personPublicReceiptImageView, R.id.saleEvidenceImageView, R.id.saleEvidenceTextView})
+                R.id.personPublicReceiptImageView, R.id.saleDepositEvidenceImageView, R.id.saleDepositEvidenceTextView, R.id.saleTransferEvidenceImageView, R.id.saleTransferEvidenceTextView})
         List<View> viewsToHide;
 
         @BindView(R.id.personNameTextView)

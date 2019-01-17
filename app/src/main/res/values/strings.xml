@@ -56,8 +56,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="users">Usuarios</string>
-    <string name="sales">Ventas</string>
     <string name="purchases">Compras</string>
+    <string name="sales">Ventas</string>
     <string name="config">Configuracion</string>
     <string name="settings">Configurar variables</string>
     <string name="profile">Perfil</string>
@@ -65,6 +65,7 @@
     <string name="email_label"><b>Email:</b> %1$s</string>
     <string name="state_label"><b>Estado:</b> %1$s</string>
     <string name="code_label"><b>Codigo:</b> %1$s</string>
+    <string name="wallet_url_label"><b>Billetera:</b> %1$s</string>
     <string name="moneyCode_label"><b>Moneda:</b> %1$s</string>
     <string name="symbol_label"><b>Simbolo:</b> %1$s</string>
     <string name="abbreviation_label"><b>Abreviacion:</b> %1$s</string>
@@ -75,7 +76,7 @@
     <string name="identificationFront_label"><b>Frontal ID:</b></string>
     <string name="identificationBack_label"><b>Trasera ID:</b></string>
     <string name="publicReceipt_label"><b>Factura :</b></string>
-    <string name="country_label"><b>Pais :</b>  %1$s</string>
+    <string name="country_label"><b>Pais:</b>  %1$s</string>
     <string name="call">Llamar</string>
     <string name="activate_user">Activar Usuario</string>
     <string name="deactivate_user">Desactivar Usuario</string>
@@ -87,6 +88,20 @@
     <string name="deny">Rechazar</string>
     <string name="value_label"><b>Valor:</b> %1$s</string>
     <string name="btc_label"><b>BTC:</b> %1$s</string>
+    <string name="bank_label"><b>Banco:</b> %1$s</string>
+    <string name="bank_number_label"><b>#Cuenta:</b> %1$s</string>
+    <string name="bank_owner_name"><b>Titular:</b> %1$s</string>
+    <string name="bank_owner_identification_label"><b>Titular ID:</b> %1$s</string>
+    <string name="bank_owner_document_type_label"><b>Titular Tipo ID:</b> %1$s</string>
     <string name="select_image">Seleccionar Imagen</string>
+    <string name="delete">Eliminar</string>
+    <string name="transfer_evidence_label"><b>Soporte de Transferencia:</b></string>
+    <string name="deposit_evidence_label"><b>Soporte de Consignacion:</b></string>
+    <string name="input_lastTradePrice">Precio último cambio</string>
+    <string name="input_purchasePercentage">Porcentaje Compra</string>
+    <string name="input_salePercentage">Porcentaje Venta</string>
+    <string name="input_hourVolume">Volumen 24 horas (BTC)</string>
+    <string name="input_activeTraders">Usuarios activos</string>
+    <string name="save">Guardar</string>
 
 </resources>

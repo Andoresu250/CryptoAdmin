@@ -12,10 +12,6 @@ import android.view.ViewGroup;
 
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
-import com.andoresu.cryptoadmin.core.sales.SaleAdapter;
-import com.andoresu.cryptoadmin.core.sales.SalesContract;
-import com.andoresu.cryptoadmin.core.sales.SalesFragment;
-import com.andoresu.cryptoadmin.core.sales.SalesPresenter;
 import com.andoresu.cryptoadmin.core.sales.data.Sale;
 import com.andoresu.cryptoadmin.core.sales.data.SalesResponse;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
@@ -28,7 +24,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SalesFragment extends BaseFragment implements SalesContract.View, SwipeRefreshLayout.OnRefreshListener{
+public class SalesFragment extends BaseFragment implements SaleContract.View, SwipeRefreshLayout.OnRefreshListener{
 
     String TAG = "CRYPTO_" + SalesFragment.class.getSimpleName();
 
@@ -49,9 +45,9 @@ public class SalesFragment extends BaseFragment implements SalesContract.View, S
     @BindView(R.id.salesSwipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    private SalesContract.UserActionsListener actionsListener;
+    private SaleContract.UserActionsListener actionsListener;
 
-    private SalesContract.InteractionListener interactionListener;
+    private SaleContract.InteractionListener interactionListener;
 
     private String selectedItem = ALL_SALES;
 
@@ -65,11 +61,12 @@ public class SalesFragment extends BaseFragment implements SalesContract.View, S
         actionsListener = new SalesPresenter(this, getContext());
     }
 
-    public static SalesFragment newInstance(SalesContract.InteractionListener interactionListener) {
+    public static SalesFragment newInstance(SaleContract.InteractionListener interactionListener) {
         Bundle args = new Bundle();
         SalesFragment fragment = new SalesFragment();
         fragment.setArguments(args);
         fragment.setInteractionListener(interactionListener);
+        fragment.setTitle("Ventas");
         return fragment;
     }
 
@@ -148,7 +145,7 @@ public class SalesFragment extends BaseFragment implements SalesContract.View, S
         actionsListener.getSales(getSalesOptions());
     }
 
-    public void setInteractionListener(SalesContract.InteractionListener interactionListener) {
+    public void setInteractionListener(SaleContract.InteractionListener interactionListener) {
         this.interactionListener = interactionListener;
     }
 

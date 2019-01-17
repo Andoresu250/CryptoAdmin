@@ -1,11 +1,13 @@
-package com.andoresu.cryptoadmin.core.saledetail;
+package com.andoresu.cryptoadmin.core.purchasedetail;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,7 @@ import android.widget.Toast;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.authorization.data.Person;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
-import com.andoresu.cryptoadmin.core.sales.data.Sale;
+import com.andoresu.cryptoadmin.core.purchase.data.Purchase;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -32,11 +34,12 @@ import butterknife.ButterKnife;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.galleryIntent;
+import static com.andoresu.cryptoadmin.utils.MyUtils.getBitmapFromCameraData;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getPathFromURI;
 
-public class SaleDetailFragment extends BaseFragment implements SaleDetailContract.View{
+public class PurchaseDetailFragment extends BaseFragment implements PurchaseDetailContract.View{
 
-    String TAG = "CRYPTO_" + SaleDetailFragment.class.getSimpleName();
+    String TAG = "CRYPTO_" + PurchaseDetailFragment.class.getSimpleName();
 
     private static final int IMAGE_PICKER_SELECT = 999;
 
@@ -49,67 +52,56 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
     @BindView(R.id.personCountryTextView)
     TextView personCountryTextView;
 
-    @BindView(R.id.bankNameTextView)
-    TextView bankNameTextView;
-    @BindView(R.id.bankNumberTextView)
-    TextView bankNumberTextView;
-    @BindView(R.id.bankOwnerNameTextView)
-    TextView bankOwnerNameTextView;
-    @BindView(R.id.bankOwnerIdentificationTextView)
-    TextView bankOwnerIdentificationTextView;
-    @BindView(R.id.bankOwnerDocumentTypeTextView)
-    TextView bankOwnerDocumentTypeTextView;
-
-    @BindView(R.id.saleDateTextView)
-    TextView saleDateTextView;
-    @BindView(R.id.saleValueTextView)
-    TextView saleValueTextView;
-    @BindView(R.id.saleBtcTextView)
-    TextView saleBtcTextView;
-    @BindView(R.id.saleStateTextView)
-    TextView saleStateTextView;
-    @BindView (R.id.saleTransferEvidenceImageView)
-    ImageView saleTransferEvidenceImageView;
-    @BindView (R.id.saleDepositEvidenceImageView)
-    ImageView saleDepositEvidenceImageView;
+    @BindView(R.id.purchaseDateTextView)
+    TextView purchaseDateTextView;
+    @BindView(R.id.purchaseValueTextView)
+    TextView purchaseValueTextView;
+    @BindView(R.id.purchaseBtcTextView)
+    TextView purchaseBtcTextView;
+    @BindView(R.id.purchaseStateTextView)
+    TextView purchaseStateTextView;
+    @BindView(R.id.purchaseWalletUrlTextView)
+    TextView purchaseWalletUrlTextView;
+    @BindView (R.id.purchaseEvidenceImageView)
+    ImageView purchaseEvidenceImageView;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    @BindView(R.id.saleDetailLayout)
-    View saleDetailLayout;
+    @BindView(R.id.purchaseDetailLayout)
+    View purchaseDetailLayout;
 
-    @BindView(R.id.selectSaleEvidenceButton)
-    Button selectSaleEvidenceButton;
-    @BindView(R.id.saleApproveButton)
-    Button saleApproveButton;
-    @BindView(R.id.saleDenyButton)
-    Button saleDenyButton;
+    @BindView(R.id.selectPurchaseEvidenceButton)
+    Button selectPurchaseEvidenceButton;
+    @BindView(R.id.purchaseApproveButton)
+    Button purchaseApproveButton;
+    @BindView(R.id.purchaseDenyButton)
+    Button purchaseDenyButton;
 
     @BindViews({R.id.personPhoneTextView, R.id.callButton, R.id.personBalanceTextView, R.id.personIdentificationFrontTextView, R.id.personIdentificationFrontImageView,
             R.id.personIdentificationBackTextView, R.id.personIdentificationBackImageView, R.id.personPublicReceiptTextView,
             R.id.personPublicReceiptImageView})
     List<View> viewsToHide;
 
-    private SaleDetailContract.UserActionsListener actionsListener;
+    private PurchaseDetailContract.UserActionsListener actionsListener;
 
-    private Sale sale;
+    private Purchase purchase;
 
     private Uri selectedImageUri;
 
-    public SaleDetailFragment(){}
+    public PurchaseDetailFragment(){}
 
-    public static SaleDetailFragment newInstance(Sale sale) {
+    public static PurchaseDetailFragment newInstance(Purchase purchase) {
         Bundle args = new Bundle();
-        SaleDetailFragment fragment = new SaleDetailFragment();
+        PurchaseDetailFragment fragment = new PurchaseDetailFragment();
         fragment.setArguments(args);
-        fragment.setSale(sale);
-        fragment.setTitle("Detalle Venta");
+        fragment.setPurchase(purchase);
+        fragment.setTitle("Detalle Compra");
         return fragment;
     }
 
-    private void setSale(Sale sale) {
-        this.sale = sale;
+    private void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
     }
 
     @Override
@@ -117,13 +109,13 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){}
-        actionsListener = new SaleDetailPresenter(this, getContext());
+        actionsListener = new PurchaseDetailPresenter(this, getContext());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sale_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_purchase_detail, container, false);
         setUnbinder(ButterKnife.bind(this, view));
         ButterKnife.apply(viewsToHide, HIDE_VIEW);
         setData();
@@ -132,14 +124,14 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
 
     @Override
     public void showProgressIndicator(boolean active) {
-        saleApproveButton.setEnabled(!active);
-        saleDenyButton.setEnabled(!active);
+        purchaseApproveButton.setEnabled(!active);
+        purchaseDenyButton.setEnabled(!active);
         if(active){
             progressBar.setVisibility(View.VISIBLE);
-            saleDetailLayout.setVisibility(View.GONE);
+            purchaseDetailLayout.setVisibility(View.GONE);
         }else{
             progressBar.setVisibility(View.GONE);
-            saleDetailLayout.setVisibility(View.VISIBLE);
+            purchaseDetailLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -155,34 +147,30 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
 
     @SuppressLint("CheckResult")
     private void setData(){
-        Person person = sale.person;
-        saleStateTextView.setText(getText(R.string.state_label, sale.state));
+        Person person = purchase.person;
+
         personNameTextView.setText(getText(R.string.name_label, person.fullName));
         personIdentificationTextView.setText(getText(R.string.identification_label, person.identification));
         personIdentificationTypeTextView.setText(getText(R.string.identification_type_label, person.documentType.name));
-        personCountryTextView.setText(getText(R.string.country_label, sale.country.name));
+        personCountryTextView.setText(getText(R.string.country_label, purchase.country.name));
 
-        bankNameTextView.setText(getText(R.string.bank_label, sale.bankAccount.bank));
-        bankNumberTextView.setText(getText(R.string.bank_number_label, sale.bankAccount.number));
-        bankOwnerNameTextView.setText(getText(R.string.bank_owner_name, sale.bankAccount.ownerName));
-        bankOwnerIdentificationTextView.setText(getText(R.string.bank_owner_identification_label, sale.bankAccount.identification));
-        bankOwnerDocumentTypeTextView.setText(getText(R.string.bank_owner_document_type_label, sale.bankAccount.documentType.name));
+        purchaseStateTextView.setText(getText(R.string.state_label, purchase.state));
+        purchaseWalletUrlTextView.setText(getText(R.string.wallet_url_label, purchase.walletUrl));
+        purchaseDateTextView.setText(getText(R.string.date_label, purchase.getCreatedAt()));
+        purchaseValueTextView.setText(getText(R.string.value_label, purchase.getValue()));
+        purchaseBtcTextView.setText(getText(R.string.btc_label, purchase.btc ));
+        purchaseDenyButton.setOnClickListener(view -> actionsListener.denyPurchase(purchase));
 
-        saleDateTextView.setText(getText(R.string.date_label, sale.getCreatedAt()));
-        saleValueTextView.setText(getText(R.string.value_label, sale.getValue()));
-        saleBtcTextView.setText(getText(R.string.btc_label, sale.btc ));
-        saleDenyButton.setOnClickListener(view -> actionsListener.denySale(sale));
+        selectPurchaseEvidenceButton.setOnClickListener(view -> selectEvidenceFile());
 
-        selectSaleEvidenceButton.setOnClickListener(view -> selectEvidenceFile());
-
-        if(sale.isPending()){
-            saleApproveButton.setVisibility(View.VISIBLE);
-            saleDenyButton.setVisibility(View.VISIBLE);
-            selectSaleEvidenceButton.setVisibility(View.VISIBLE);
+        if(purchase.isPending()){
+            purchaseApproveButton.setVisibility(View.VISIBLE);
+            purchaseDenyButton.setVisibility(View.VISIBLE);
+            selectPurchaseEvidenceButton.setVisibility(View.VISIBLE);
         }else{
-            saleApproveButton.setVisibility(View.GONE);
-            saleDenyButton.setVisibility(View.GONE);
-            selectSaleEvidenceButton.setVisibility(View.GONE);
+            purchaseApproveButton.setVisibility(View.GONE);
+            purchaseDenyButton.setVisibility(View.GONE);
+            selectPurchaseEvidenceButton.setVisibility(View.GONE);
         }
 
         RequestOptions requestOptions = new RequestOptions();
@@ -190,18 +178,13 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
         requestOptions.error(R.drawable.imagen_disponible);
 
         Glide.with(this)
-                .load(sale.transferEvidence)
+                .load(purchase.evidence)
                 .apply(requestOptions)
-                .into(saleTransferEvidenceImageView);
+                .into(purchaseEvidenceImageView);
 
-        Glide.with(this)
-                .load(sale.depositEvidence)
-                .apply(requestOptions)
-                .into(saleDepositEvidenceImageView);
-
-        saleApproveButton.setOnClickListener(view -> {
+        purchaseApproveButton.setOnClickListener(view -> {
             if(selectedImageUri != null){
-                actionsListener.approveSale(sale, selectedImageUri);
+                actionsListener.approvePurchase(purchase, selectedImageUri);
             }else{
                 Toast.makeText(getContext(), "Debe debe adjutar la evidencia para poder aprobar", Toast.LENGTH_SHORT).show();
             }
@@ -223,15 +206,15 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
                 File file = new File(path);
                 Glide.with(this)
                         .load(Uri.fromFile(file))
-                        .into(saleDepositEvidenceImageView);
+                        .into(purchaseEvidenceImageView);
             }
         }
 
     }
 
     @Override
-    public void showSale(Sale sale) {
-        this.sale = sale;
+    public void showPurchase(Purchase purchase) {
+        this.purchase = purchase;
         setData();
     }
 }

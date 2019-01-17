@@ -11,6 +11,8 @@ public interface UserDetailContract {
     interface View extends BaseView {
 
         void showUser(User user);
+
+        void backToUsers();
     }
 
     interface  UserActionsListener {
@@ -18,6 +20,8 @@ public interface UserDetailContract {
         void activateUser(User user);
 
         void deActivateUser(User user);
+
+        void deleteUser(User user);
 
     }
 }

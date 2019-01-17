@@ -70,6 +70,7 @@ public class ChargesFragment extends BaseFragment implements ChargesContract.Vie
         ChargesFragment fragment = new ChargesFragment();
         fragment.setArguments(args);
         fragment.setInteractionListener(interactionListener);
+        fragment.setTitle("Recargas");
         return fragment;
     }
 

@@ -26,18 +26,27 @@ import com.andoresu.cryptoadmin.core.charges.ChargesContract;
 import com.andoresu.cryptoadmin.core.charges.ChargesFragment;
 import com.andoresu.cryptoadmin.core.chargedetail.ChargeDetailFragment;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
-import com.andoresu.cryptoadmin.core.saledetail.SaleDetailFragment;
-import com.andoresu.cryptoadmin.core.sales.SalesContract;
+import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
+import com.andoresu.cryptoadmin.core.purchasedetail.PurchaseDetailFragment;
+import com.andoresu.cryptoadmin.core.purchase.PurchaseContract;
+import com.andoresu.cryptoadmin.core.purchase.PurchasesFragment;
+import com.andoresu.cryptoadmin.core.purchase.data.Purchase;
+import com.andoresu.cryptoadmin.core.sales.SaleContract;
 import com.andoresu.cryptoadmin.core.sales.SalesFragment;
 import com.andoresu.cryptoadmin.core.sales.data.Sale;
+import com.andoresu.cryptoadmin.core.saledetail.SaleDetailFragment;
+import com.andoresu.cryptoadmin.core.settings.SettingFragment;
 import com.andoresu.cryptoadmin.core.userdetail.UserDetailFragment;
 import com.andoresu.cryptoadmin.core.users.UsersContract;
 import com.andoresu.cryptoadmin.core.users.UsersFragment;
 import com.andoresu.cryptoadmin.security.SecureData;
 import com.andoresu.cryptoadmin.utils.BaseActivity;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import javax.security.auth.login.LoginException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +56,7 @@ public class MainActivity extends BaseActivity implements
         MainContract.View,
         UsersContract.InteractionListener,
         ChargesContract.InteractionListener,
-        SalesContract.InteractionListener {
+        PurchaseContract.InteractionListener, SaleContract.InteractionListener {
 
     String TAG = "CRYPTO_" + MainActivity.class.getSimpleName();
 
@@ -71,6 +80,8 @@ public class MainActivity extends BaseActivity implements
     private HeaderViewHolder headerViewHolder;
 
     private User user;
+
+    private BaseFragment currentFragment;
 
 
     @Override
@@ -96,7 +107,7 @@ public class MainActivity extends BaseActivity implements
 
         actionsListener = new MainPresenter(this, this, SecureData.getToken());
 
-        setSalesFragment();
+        setSettingFragment();
     }
 
     @Override
@@ -144,16 +155,14 @@ public class MainActivity extends BaseActivity implements
             case R.id.navCharges:
                 setChargesFragment();
                 break;
-            case R.id.navSales:
+            case R.id.navSale:
                 setSalesFragment();
                 break;
-            case R.id.navPurchases:
-//                TODO: go to purchases
-                Toast.makeText(this, "Funcion en progreso", Toast.LENGTH_SHORT).show();
+            case R.id.navPurchase:
+                setPurchasesFragment();
                 break;
             case R.id.navSettings:
-//                TODO: go to settings
-                Toast.makeText(this, "Funcion en progreso", Toast.LENGTH_SHORT).show();
+                setSettingFragment();
                 break;
             case R.id.navProfile:
 //                TODO: go to profile
@@ -191,42 +200,53 @@ public class MainActivity extends BaseActivity implements
         fragmentTransaction.replace(R.id.mainFragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        setTitle(fragment.getTitle());
+        currentFragment = fragment;
     }
 
     private void setUsersFragment(){
-        setTitle("Usuarios");
         UsersFragment usersFragment = UsersFragment.newInstance(this);
         changeFragment(usersFragment);
     }
 
     private void setUserDetailFragment(User user){
-        setTitle("Detalle Usuario");
         UserDetailFragment userDetailFragment = UserDetailFragment.newInstance(user);
         changeFragment(userDetailFragment);
     }
 
     private void setChargesFragment(){
-        setTitle("Recargas");
         ChargesFragment chargesFragment = ChargesFragment.newInstance(this);
         changeFragment(chargesFragment);
     }
 
     private void setChargeDetailFragment(Charge charge){
-        setTitle("Detalle Recarga");
         ChargeDetailFragment chargeDetailFragment = ChargeDetailFragment.newInstance(charge);
         changeFragment(chargeDetailFragment);
     }
 
-    private void setSalesFragment(){
-        setTitle("Ventas");
-        SalesFragment salesFragment = SalesFragment.newInstance(this);
-        changeFragment(salesFragment);
+    private void setPurchasesFragment(){
+        PurchasesFragment purchasesFragment = PurchasesFragment.newInstance(this);
+        changeFragment(purchasesFragment);
     }
 
-    private void setSaleDetailFragment(Sale charge){
-        setTitle("Detalle Venta");
-        SaleDetailFragment chargeDetailFragment = SaleDetailFragment.newInstance(charge);
-        changeFragment(chargeDetailFragment);
+    private void setPurchaseDetailFragment(Purchase purchase){
+        PurchaseDetailFragment purchaseDetailFragment = PurchaseDetailFragment.newInstance(purchase);
+        changeFragment(purchaseDetailFragment);
+    }
+
+    private void setSalesFragment(){
+        SalesFragment purchasesFragment = SalesFragment.newInstance(this);
+        changeFragment(purchasesFragment);
+    }
+
+    private void setSaleDetailFragment(Sale sale){
+        SaleDetailFragment saleDetailFragment = SaleDetailFragment.newInstance(sale);
+        changeFragment(saleDetailFragment);
+    }
+
+    private void setSettingFragment(){
+        SettingFragment settingFragment = SettingFragment.newInstance();
+        changeFragment(settingFragment);
     }
 
     @Override
@@ -236,14 +256,19 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void goToChargeDetail(Charge charge) {
-        Log.e(TAG, "goToChargeDetail: puta madre");
         setChargeDetailFragment(charge);
+    }
+
+    @Override
+    public void goToPurchaseDetail(Purchase purchase) {
+        setPurchaseDetailFragment(purchase);
     }
 
     @Override
     public void goToSaleDetail(Sale sale) {
         setSaleDetailFragment(sale);
     }
+
 
     protected static class HeaderViewHolder {
 

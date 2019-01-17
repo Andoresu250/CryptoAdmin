@@ -48,6 +48,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.ButterKnife;
@@ -427,6 +428,26 @@ public class MyUtils {
     @SuppressLint("DefaultLocale")
     public static String toMoney(double price, String currency){
         return (currency + " " + String.format("%,.2f", price)).replaceAll(",00", "");
+    }
+
+    public static <T> T getFirst(List<T> list){
+        try {
+            return list.get(0);
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public static Float parseFloat(String s){
+        try{
+            return Float.parseFloat(s);
+        }catch (Exception e){ return null; }
+    }
+
+    public static Integer parseInt(String s){
+        try{
+            return Integer.parseInt(s);
+        }catch (Exception e){ return null; }
     }
 
     public static Intent phoneIntent(String number){

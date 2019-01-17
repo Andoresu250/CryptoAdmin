@@ -80,6 +80,7 @@ public class ChargeDetailFragment extends BaseFragment implements ChargeDetailCo
         ChargeDetailFragment fragment = new ChargeDetailFragment();
         fragment.setArguments(args);
         fragment.setCharge(charge);
+        fragment.setTitle("Detalle Recarga");
         return fragment;
     }
 

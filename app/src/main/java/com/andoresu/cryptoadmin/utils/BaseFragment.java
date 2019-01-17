@@ -8,11 +8,13 @@ import android.text.SpannedString;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.andoresu.cryptoadmin.R;
+
 import butterknife.Unbinder;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.removeTrailingLineFeed;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     String TAG = "CRYPTO_" + BaseFragment.class.getSimpleName();
 
@@ -74,12 +76,18 @@ public class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         setFragmentCreated(true);
+        if(getActivity() != null){
+            getActivity().setTitle(getTitle());
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if(getActivity() != null){
+            getActivity().setTitle(R.string.app_name);
+        }
     }
 
     public CharSequence getText(int id, Object... args) {

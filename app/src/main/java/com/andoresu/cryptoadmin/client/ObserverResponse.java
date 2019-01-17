@@ -26,6 +26,8 @@ public class ObserverResponse<BaseResponse> implements Observer<BaseResponse> {
 
     private final boolean showGlobalError;
 
+    public ErrorResponse errorResponse;
+
     public ObserverResponse() {
         this.view = null;
         this.showGlobalError = true;
@@ -67,21 +69,17 @@ public class ObserverResponse<BaseResponse> implements Observer<BaseResponse> {
         try{
             Response response = (Response) baseResponse;
             if (!response.isSuccessful()){
-                ErrorResponse errorResponse = ErrorResponse.response(response);
-//            Log.e(TAG, "onNext: json " + response.body().toString());
+                errorResponse = ErrorResponse.response(response);
                 if(view != null && showGlobalError){
                     view.showGlobalError(errorResponse);
                 }
-                Log.e(TAG, "onNextError: " + errorResponse );
-            }else{
-                if(response.body() != null){
-//                Log.i(TAG, "onNext: " + response.body().toString());
-                }
+                Log.e(TAG, "ObserverResponse Error: " + errorResponse.raw );
             }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void onError(Throwable e) {

@@ -13,11 +13,11 @@
             android:icon="@drawable/ic_money"
             android:title="@string/charges" />
         <item
-            android:id="@+id/navSales"
+            android:id="@+id/navSale"
             android:icon="@drawable/ic_sale"
             android:title="@string/sales" />
         <item
-            android:id="@+id/navPurchases"
+            android:id="@+id/navPurchase"
             android:icon="@drawable/ic_purchase"
             android:title="@string/purchases" />
     </group>

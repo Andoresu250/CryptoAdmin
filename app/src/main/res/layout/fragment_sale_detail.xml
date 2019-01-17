@@ -18,6 +18,9 @@
             <include layout="@layout/content_person"
                 android:id="@+id/contentPersonLayout"
                 />
+            <include layout="@layout/content_bank_account"
+                android:id="@+id/contentBankAccountLayout"
+                />
             <include layout="@layout/content_sale"
                 android:id="@+id/contentChargeLayout"
                 />
