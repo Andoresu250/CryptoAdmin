@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/personNameTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/personIdentificationTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/identification_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personNameTextView"
+        />
+
+    <TextView
+        android:id="@+id/personIdentificationTypeTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/identification_type_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personIdentificationTextView"
+        />
+
+    <TextView
+        android:id="@+id/personCountryTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/country_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personIdentificationTypeTextView"
+        />
+
+    <TextView
+        android:id="@+id/personPhoneTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personCountryTextView"
+        />
+
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/personPhoneTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/personPhoneTextView"
+        app:layout_constraintStart_toEndOf="@+id/personPhoneTextView"
+        android:text="@string/call"
+        android:drawableStart="@drawable/ic_phone"
+        android:theme="@style/PrimaryButton"
+        />
+
+    <TextView
+        android:id="@+id/personBalanceTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/balance_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personPhoneTextView"
+        />
+
+    <TextView
+        android:id="@+id/personIdentificationFrontTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/identificationFront_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personBalanceTextView"
+        />
+
+    <ImageView
+        android:id="@+id/personIdentificationFrontImageView"
+        android:src="@drawable/imagen_disponible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personIdentificationFrontTextView"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/personIdentificationBackTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/identificationBack_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personIdentificationFrontImageView"
+        />
+
+    <ImageView
+        android:id="@+id/personIdentificationBackImageView"
+        android:src="@drawable/imagen_disponible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personIdentificationBackTextView"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/personPublicReceiptTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/publicReceipt_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personIdentificationBackImageView"
+        />
+
+    <ImageView
+        android:id="@+id/personPublicReceiptImageView"
+        android:src="@drawable/imagen_disponible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personPublicReceiptTextView"
+        tools:ignore="ContentDescription" />
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,111 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.andoresu.cryptoadmin"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.compileSdkVersion
+        vectorDrawables.useSupportLibrary = true
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /*Base*/
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayout"
+    implementation "com.google.guava:guava:$rootProject.guavaVersion"
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+
+    /*Easy GUI handling*/
+    implementation "com.jakewharton:butterknife:$rootProject.butterknife"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife"
+
+    /*Rest Client*/
+    implementation "com.google.code.gson:gson:$rootProject.gson"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.loggingInterceptor"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.adapterRxjava2"
+
+    /*Secure data*/
+    implementation "de.adorsys.android:securestoragelibrary:$rootProject.securestoragelibrary"
+
+    //ImageView Async
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glide"
+
+    /* Fancy spinner */
+//    implementation 'com.github.arcadefire:nice-spinner:1.3.7'
+    implementation 'com.jaredrummler:material-spinner:1.3.1'
+
+    /* fancy label/tag*/
+    implementation 'com.github.everseat:TextViewLabel:0.1'
+
+    /* FileUtils*/
+    implementation 'commons-io:commons-io:2.4'
+
+//    //google maps
+//    implementation "com.google.android.gms:play-services-location:$rootProject.playServicesLocation"
+//    implementation "com.google.android.gms:play-services-places:$rootProject.playServicesLocation"
+//    implementation "com.google.android.gms:play-services-maps:$rootProject.playServicesLocation"
+//    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
+//    //Evaluate math functions
+//    implementation "net.objecthunter:exp4j:$rootProject.exp4j"
+
+    // Dependencies for local unit tests
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
+    testImplementation "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
+
+    // Android Testing Support Library's runner and rules
+    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+
+    // Espresso UI Testing dependencies.
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+}

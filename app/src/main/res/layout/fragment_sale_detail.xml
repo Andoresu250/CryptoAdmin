@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <ScrollView
+        android:id="@+id/saleDetailLayout"
+        android:layout_margin="@dimen/activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/content_person"
+                android:id="@+id/contentPersonLayout"
+                />
+            <include layout="@layout/content_sale"
+                android:id="@+id/contentChargeLayout"
+                />
+            <Button
+                android:id="@+id/selectSaleEvidenceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/PrimaryButton"
+                android:text="@string/select_image"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_camera"
+                />
+
+            <Button
+                android:id="@+id/saleApproveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/PrimaryButton"
+                android:text="@string/approve"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_check"
+                />
+
+            <Button
+                android:id="@+id/saleDenyButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AlertButton"
+                android:text="@string/deny"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_deny"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.v7.widget.CardView>

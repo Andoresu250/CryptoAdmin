@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/countryNameTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/countryCodeTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/code_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countryNameTextView"
+         />
+
+    <TextView
+        android:id="@+id/countryMoneyCodeTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:text="@string/moneyCode_label"
+        app:layout_constraintEnd_toStartOf="@+id/countrySymbolTextView"
+        app:layout_constraintStart_toEndOf="@+id/countryCodeTextView"
+        app:layout_constraintTop_toTopOf="@+id/countryCodeTextView" />
+
+    <TextView
+        android:id="@+id/countrySymbolTextView"
+        style="@style/BaseEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/symbol_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/countryCodeTextView" />
+
+</android.support.constraint.ConstraintLayout>

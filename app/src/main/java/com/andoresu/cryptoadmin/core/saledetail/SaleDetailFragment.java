@@ -1,0 +1,216 @@
+package com.andoresu.cryptoadmin.core.saledetail;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.andoresu.cryptoadmin.R;
+import com.andoresu.cryptoadmin.authorization.data.Person;
+import com.andoresu.cryptoadmin.client.ErrorResponse;
+import com.andoresu.cryptoadmin.core.sales.data.Sale;
+import com.andoresu.cryptoadmin.utils.BaseFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.io.File;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+
+import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
+import static com.andoresu.cryptoadmin.utils.MyUtils.galleryIntent;
+import static com.andoresu.cryptoadmin.utils.MyUtils.getBitmapFromCameraData;
+import static com.andoresu.cryptoadmin.utils.MyUtils.getPathFromURI;
+
+public class SaleDetailFragment extends BaseFragment implements SaleDetailContract.View{
+
+    String TAG = "CRYPTO_" + SaleDetailFragment.class.getSimpleName();
+
+    private static final int IMAGE_PICKER_SELECT = 999;
+
+    @BindView(R.id.personNameTextView)
+    TextView personNameTextView;
+    @BindView(R.id.personIdentificationTextView)
+    TextView personIdentificationTextView;
+    @BindView(R.id.personIdentificationTypeTextView)
+    TextView personIdentificationTypeTextView;
+    @BindView(R.id.personCountryTextView)
+    TextView personCountryTextView;
+
+    @BindView(R.id.saleDateTextView)
+    TextView saleDateTextView;
+    @BindView(R.id.saleValueTextView)
+    TextView saleValueTextView;
+    @BindView(R.id.saleBtcTextView)
+    TextView saleBtcTextView;
+    @BindView(R.id.saleStateTextView)
+    TextView saleStateTextView;
+    @BindView (R.id.saleEvidenceImageView)
+    ImageView saleEvidenceImageView;
+
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.saleDetailLayout)
+    View saleDetailLayout;
+
+    @BindView(R.id.selectSaleEvidenceButton)
+    Button selectSaleEvidenceButton;
+    @BindView(R.id.saleApproveButton)
+    Button saleApproveButton;
+    @BindView(R.id.saleDenyButton)
+    Button saleDenyButton;
+
+    @BindViews({R.id.personPhoneTextView, R.id.callButton, R.id.personBalanceTextView, R.id.personIdentificationFrontTextView, R.id.personIdentificationFrontImageView,
+            R.id.personIdentificationBackTextView, R.id.personIdentificationBackImageView, R.id.personPublicReceiptTextView,
+            R.id.personPublicReceiptImageView})
+    List<View> viewsToHide;
+
+    private SaleDetailContract.UserActionsListener actionsListener;
+
+    private Sale sale;
+
+    private Uri selectedImageUri;
+
+    public SaleDetailFragment(){}
+
+    public static SaleDetailFragment newInstance(Sale sale) {
+        Bundle args = new Bundle();
+        SaleDetailFragment fragment = new SaleDetailFragment();
+        fragment.setArguments(args);
+        fragment.setSale(sale);
+        return fragment;
+    }
+
+    private void setSale(Sale sale) {
+        this.sale = sale;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if(bundle != null){}
+        actionsListener = new SaleDetailPresenter(this, getContext());
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_sale_detail, container, false);
+        setUnbinder(ButterKnife.bind(this, view));
+        ButterKnife.apply(viewsToHide, HIDE_VIEW);
+        setData();
+        return view;
+    }
+
+    @Override
+    public void showProgressIndicator(boolean active) {
+        saleApproveButton.setEnabled(!active);
+        saleDenyButton.setEnabled(!active);
+        if(active){
+            progressBar.setVisibility(View.VISIBLE);
+            saleDetailLayout.setVisibility(View.GONE);
+        }else{
+            progressBar.setVisibility(View.GONE);
+            saleDetailLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void showGlobalError(ErrorResponse errorResponse) {
+        Toast.makeText(getContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogoutFinish() {
+
+    }
+
+    @SuppressLint("CheckResult")
+    private void setData(){
+        Person person = sale.person;
+        saleStateTextView.setText(getText(R.string.state_label, sale.state));
+        personNameTextView.setText(getText(R.string.name_label, person.fullName));
+        personIdentificationTextView.setText(getText(R.string.identification_label, person.identification));
+        personIdentificationTypeTextView.setText(getText(R.string.identification_type_label, person.documentType.name));
+        personCountryTextView.setText(getText(R.string.country_label, sale.country.name));
+
+        saleDateTextView.setText(getText(R.string.date_label, sale.getCreatedAt()));
+        saleValueTextView.setText(getText(R.string.value_label, sale.getValue()));
+        saleBtcTextView.setText(getText(R.string.btc_label, sale.btc ));
+        saleDenyButton.setOnClickListener(view -> actionsListener.denySale(sale));
+
+        selectSaleEvidenceButton.setOnClickListener(view -> selectEvidenceFile());
+
+        if(sale.isPending()){
+            saleApproveButton.setVisibility(View.VISIBLE);
+            saleDenyButton.setVisibility(View.VISIBLE);
+            selectSaleEvidenceButton.setVisibility(View.VISIBLE);
+        }else{
+            saleApproveButton.setVisibility(View.GONE);
+            saleDenyButton.setVisibility(View.GONE);
+            selectSaleEvidenceButton.setVisibility(View.GONE);
+        }
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.imagen_disponible);
+        requestOptions.error(R.drawable.imagen_disponible);
+
+        Glide.with(this)
+                .load(sale.evidence)
+                .apply(requestOptions)
+                .into(saleEvidenceImageView);
+
+        saleApproveButton.setOnClickListener(view -> {
+            if(selectedImageUri != null){
+                actionsListener.approveSale(sale, selectedImageUri);
+            }else{
+                Toast.makeText(getContext(), "Debe debe adjutar la evidencia para poder aprobar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void selectEvidenceFile(){
+        startActivityForResult(galleryIntent(), IMAGE_PICKER_SELECT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_PICKER_SELECT  && resultCode == Activity.RESULT_OK) {
+            selectedImageUri = data.getData();
+            final String path = getPathFromURI(selectedImageUri, getContext());
+            if (path != null) {
+                File file = new File(path);
+                Glide.with(this)
+                        .load(Uri.fromFile(file))
+                        .into(saleEvidenceImageView);
+            }
+        }
+
+    }
+
+    @Override
+    public void showSale(Sale sale) {
+        this.sale = sale;
+        setData();
+    }
+}
+
