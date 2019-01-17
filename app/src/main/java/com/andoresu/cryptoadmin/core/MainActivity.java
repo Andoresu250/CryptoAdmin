@@ -27,6 +27,8 @@ import com.andoresu.cryptoadmin.core.charges.ChargesFragment;
 import com.andoresu.cryptoadmin.core.chargedetail.ChargeDetailFragment;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
 import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
+import com.andoresu.cryptoadmin.core.profile.ProfileContract;
+import com.andoresu.cryptoadmin.core.profile.ProfileFragment;
 import com.andoresu.cryptoadmin.core.purchasedetail.PurchaseDetailFragment;
 import com.andoresu.cryptoadmin.core.purchase.PurchaseContract;
 import com.andoresu.cryptoadmin.core.purchase.PurchasesFragment;
@@ -51,12 +53,16 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.andoresu.cryptoadmin.client.GsonBuilderUtils.getUserGson;
+
 public class MainActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         MainContract.View,
         UsersContract.InteractionListener,
         ChargesContract.InteractionListener,
-        PurchaseContract.InteractionListener, SaleContract.InteractionListener {
+        PurchaseContract.InteractionListener,
+        SaleContract.InteractionListener,
+        ProfileContract.InteractionListener {
 
     String TAG = "CRYPTO_" + MainActivity.class.getSimpleName();
 
@@ -96,7 +102,7 @@ public class MainActivity extends BaseActivity implements
         user = (User) getIntent().getSerializableExtra(User.NAME);
 
         headerViewHolder = new HeaderViewHolder(navigationView.getHeaderView(0));
-        headerViewHolder.navHeaderTextView.setText(user.profile.fullName);
+        setUserNameToMenu();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -107,7 +113,12 @@ public class MainActivity extends BaseActivity implements
 
         actionsListener = new MainPresenter(this, this, SecureData.getToken());
 
-        setSettingFragment();
+        setUsersFragment();
+
+    }
+
+    private void setUserNameToMenu(){
+        headerViewHolder.navHeaderTextView.setText(user.profile.fullName);
     }
 
     @Override
@@ -165,8 +176,7 @@ public class MainActivity extends BaseActivity implements
                 setSettingFragment();
                 break;
             case R.id.navProfile:
-//                TODO: go to profile
-                Toast.makeText(this, "Funcion en progreso", Toast.LENGTH_SHORT).show();
+                setProfileFragment();
                 break;
             case R.id.navLogout:
                 actionsListener.logout();
@@ -249,6 +259,11 @@ public class MainActivity extends BaseActivity implements
         changeFragment(settingFragment);
     }
 
+    private void setProfileFragment(){
+        ProfileFragment profileFragment = ProfileFragment.newInstance(this);
+        changeFragment(profileFragment);
+    }
+
     @Override
     public void goToUserDetail(User user) {
         setUserDetailFragment(user);
@@ -267,6 +282,12 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void goToSaleDetail(Sale sale) {
         setSaleDetailFragment(sale);
+    }
+
+    @Override
+    public void updateUserName(User user) {
+        this.user = user;
+        setUserNameToMenu();
     }
 
 

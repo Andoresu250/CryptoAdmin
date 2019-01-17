@@ -22,6 +22,8 @@ public class User extends BaseObject implements Serializable {
     public String profileType;
     public String token;
     public Profile profile;
+    public String password;
+    public String passwordConfirmation;
 
     public User(){}
 
@@ -32,6 +34,14 @@ public class User extends BaseObject implements Serializable {
     public boolean isPerson(){
         return profile instanceof Person;
     }
+
+    public Admin getAdmin(){
+        if (isAdmin()){
+            return (Admin) profile;
+        }
+        return null;
+    }
+
 
 
     public void setType(){

@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 public abstract class Profile extends BaseObject implements Serializable{
 
-    public String type;
+
+    public transient String type;
     public String fullName;
 
     public Profile(){}

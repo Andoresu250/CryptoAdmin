@@ -24,8 +24,8 @@ public class ServiceGenerator {
 
     public static final String TAG = "CRYPTO_" + ServiceGenerator.class.getSimpleName();
 
-    private static final String API_URL = "https://bitcoin-trade-andoresu250.c9users.io/";
-//    private static final String API_URL = "https://bitcoin-trate-api.herokuapp.com/";
+//    private static final String API_URL = "https://bitcoin-trade-andoresu250.c9users.io/";
+    private static final String API_URL = "https://bitcoin-trate-api.herokuapp.com/";
 
 
     public static <S> S createAPIService(Class<S> serviceClass){
