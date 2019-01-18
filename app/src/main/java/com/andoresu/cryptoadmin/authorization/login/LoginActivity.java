@@ -30,6 +30,8 @@ import butterknife.OnEditorAction;
 import static com.andoresu.cryptoadmin.utils.MyUtils.checkNullEmpty;
 import static com.andoresu.cryptoadmin.utils.MyUtils.closeKeyboard;
 import static com.andoresu.cryptoadmin.utils.MyUtils.showErrorDialog;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 @SuppressLint("LogNotTimber")
 public class LoginActivity extends BaseActivity
@@ -60,6 +62,7 @@ public class LoginActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 

@@ -50,7 +50,6 @@
                 android:hint="@string/input_user"
                 android:nextFocusDown="@id/passwordEditText"
                 style="@style/BaseEditText"
-                android:text="admin@admin.com"
                  />
         </android.support.design.widget.TextInputLayout>
 
@@ -72,7 +71,6 @@
                 android:inputType="textPassword"
                 android:imeActionId="123"
                 android:imeOptions="actionSend"
-                android:text="12345678"
                 />
         </android.support.design.widget.TextInputLayout>
 
