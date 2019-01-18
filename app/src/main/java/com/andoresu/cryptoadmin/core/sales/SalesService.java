@@ -2,6 +2,7 @@ package com.andoresu.cryptoadmin.core.sales;
 
 
 
+import com.andoresu.cryptoadmin.core.sales.data.Sale;
 import com.andoresu.cryptoadmin.core.sales.data.SalesResponse;
 
 import java.util.Map;
@@ -24,7 +25,7 @@ public interface SalesService {
 
     @Multipart
     @PUT("sales/{id}/approve")
-    Observable<Response<ResponseBody>> approve(@Path("id") String id, @Part MultipartBody.Part evidence);
+    Observable<Response<Sale>> approve(@Path("id") String id, @Part MultipartBody.Part evidence);
 
     @PUT("sales/{id}/deny")
     Observable<Response<ResponseBody>> deny(@Path("id") String id);

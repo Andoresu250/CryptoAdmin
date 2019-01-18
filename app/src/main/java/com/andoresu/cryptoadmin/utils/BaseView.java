@@ -11,4 +11,6 @@ public interface BaseView {
 
     void onLogoutFinish();
 
+    void showMessage(String msg);
+
 }

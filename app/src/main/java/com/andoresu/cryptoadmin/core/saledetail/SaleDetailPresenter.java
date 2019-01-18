@@ -22,34 +22,35 @@ public class SaleDetailPresenter implements SaleDetailContract.UserActionsListen
 
     String TAG = "CRYPTO_" + SaleDetailPresenter.class.getSimpleName();
 
-    private final SaleDetailContract.View chargeDetailView;
+    private final SaleDetailContract.View saleDetailView;
 
     private final Context context;
 
-    private final SalesService chargesService;
+    private final SalesService salesService;
 
     public SaleDetailPresenter(SaleDetailContract.View chargeDetailView, Context context) {
-        this.chargeDetailView = chargeDetailView;
+        this.saleDetailView = chargeDetailView;
         this.context = context;
-        this.chargesService = ServiceGenerator.createService(SalesService.class, SecureData.getToken(), getUserGson());
+        this.salesService = ServiceGenerator.createService(SalesService.class, SecureData.getToken(), getUserGson());
     }
 
     @Override
-    public void approveSale(Sale charge, Uri fileUri) {
+    public void approveSale(Sale sale, Uri fileUri) {
 
 
-        MultipartBody.Part body = prepareFilePart("sale[evidence]", fileUri, context);
+        MultipartBody.Part body = prepareFilePart("sale[deposit_evidence]", fileUri, context);
 
-        chargesService.approve(charge.id, body)
+        salesService.approve(sale.id, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ObserverResponse<Response<ResponseBody>>(chargeDetailView, true) {
+                .subscribe(new ObserverResponse<Response<Sale>>(saleDetailView, true) {
                     @Override
-                    public void onNext(Response<ResponseBody> responseBodyResponse) {
-                        super.onNext(responseBodyResponse);
-                        if(responseBodyResponse.isSuccessful()){
-                            charge.state = Sale.STATE_APPROVED;
-                            chargeDetailView.showSale(charge);
+                    public void onNext(Response<Sale> saleResponse) {
+                        super.onNext(saleResponse);
+                        if(saleResponse.isSuccessful()){
+                            sale.state = Sale.STATE_APPROVED;
+                            saleDetailView.showSale(saleResponse.body());
+                            saleDetailView.showMessage("Venta aprobada exitosamente");
                         }
                     }
                 });
@@ -57,17 +58,18 @@ public class SaleDetailPresenter implements SaleDetailContract.UserActionsListen
     }
 
     @Override
-    public void denySale(Sale charge) {
-        chargesService.deny(charge.id)
+    public void denySale(Sale sale) {
+        salesService.deny(sale.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ObserverResponse<Response<ResponseBody>>(chargeDetailView, true) {
+                .subscribe(new ObserverResponse<Response<ResponseBody>>(saleDetailView, true) {
                     @Override
                     public void onNext(Response<ResponseBody> responseBodyResponse) {
                         super.onNext(responseBodyResponse);
                         if(responseBodyResponse.isSuccessful()){
-                            charge.state = Sale.STATE_DENIED;
-                            chargeDetailView.showSale(charge);
+                            sale.state = Sale.STATE_DENIED;
+                            saleDetailView.showSale(sale);
+                            saleDetailView.showMessage("Venta rechazada exitosamente");
                         }
                     }
                 });

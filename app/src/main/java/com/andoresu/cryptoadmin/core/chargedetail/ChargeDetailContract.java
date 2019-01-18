@@ -7,6 +7,7 @@ public interface ChargeDetailContract {
     interface View extends BaseView {
 
         void showCharge(Charge charge);
+
     }
 
     interface  UserActionsListener {

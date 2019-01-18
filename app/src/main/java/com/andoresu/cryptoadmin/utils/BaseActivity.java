@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 
 import com.andoresu.cryptoadmin.R;
+import com.andoresu.cryptoadmin.client.ErrorResponse;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.checkPermissions;
 import static com.andoresu.cryptoadmin.utils.MyUtils.removeTrailingLineFeed;
@@ -20,7 +21,7 @@ import static com.andoresu.cryptoadmin.utils.MyUtils.showErrorDialog;
 
 
 @SuppressLint({"Registered", "LogNotTimber"})
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements BaseView{
 
 
     private String TAG = "CRYPTO_" + BaseActivity.class.getSimpleName();
@@ -103,6 +104,26 @@ public class BaseActivity extends AppCompatActivity {
         if(checkPermissions(this)){
             showErrorDialog(this, getString(R.string.error_no_permission), (String) null, (dialogInterface, i) -> requestActivityPermissions());
         }
+    }
+
+    @Override
+    public void showProgressIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showGlobalError(ErrorResponse errorResponse) {
+
+    }
+
+    @Override
+    public void onLogoutFinish() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
     }
 
     public interface ServiceConnectionListener{

@@ -30,6 +30,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
@@ -42,6 +43,7 @@ import android.widget.EditText;
 
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
+import com.bumptech.glide.request.RequestOptions;
 
 
 import org.apache.commons.io.FileUtils;
@@ -83,6 +85,20 @@ public class MyUtils {
     public static boolean checkOnlyLetters(String s, boolean onlyUpperCase) {
         String regex = onlyUpperCase ? "[A-Z]+" : "[a-zA-Z]+";
         return s.matches(regex);
+    }
+
+    @SuppressLint("CheckResult")
+    public static RequestOptions glideRequestOptions(Context context){
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.loading_image);
+        requestOptions.error(R.drawable.imagen_disponible);
+
+        return requestOptions;
     }
 
     public static String stringToUri(String s){

@@ -7,14 +7,16 @@ import android.text.Html;
 import android.text.SpannedString;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.andoresu.cryptoadmin.R;
+import com.andoresu.cryptoadmin.client.ErrorResponse;
 
 import butterknife.Unbinder;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.removeTrailingLineFeed;
 
-public abstract class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements BaseView{
 
     String TAG = "CRYPTO_" + BaseFragment.class.getSimpleName();
 
@@ -101,4 +103,23 @@ public abstract class BaseFragment extends Fragment {
         return bundle;
     }
 
+    @Override
+    public void showProgressIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showGlobalError(ErrorResponse errorResponse) {
+
+    }
+
+    @Override
+    public void onLogoutFinish() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.andoresu.cryptoadmin.utils.MyUtils.glideRequestOptions;
 import static com.andoresu.cryptoadmin.utils.MyUtils.phoneIntent;
 
 public class UserDetailFragment extends BaseFragment implements UserDetailContract.View{
@@ -144,23 +145,19 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
         personPhoneTextView.setText(getText(R.string.phone_label, person.getPhone()));
         personBalanceTextView.setText(getText(R.string.balance_label, person.getBalance()));
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.imagen_disponible);
-        requestOptions.error(R.drawable.imagen_disponible);
-
         Glide.with(this)
                 .load(person.identificationFront.url)
-                .apply(requestOptions)
+                .apply(glideRequestOptions(getContext()))
                 .into(personIdentificationFrontImageView);
 
         Glide.with(this)
                 .load(person.identificationBack.url)
-                .apply(requestOptions)
+                .apply(glideRequestOptions(getContext()))
                 .into(personIdentificationBackImageView);
 
         Glide.with(this)
                 .load(person.publicReceipt.url)
-                .apply(requestOptions)
+                .apply(glideRequestOptions(getContext()))
                 .into(personPublicReceiptImageView);
 
         callButton.setOnClickListener(view -> startActivity(phoneIntent(person.getPhone())));

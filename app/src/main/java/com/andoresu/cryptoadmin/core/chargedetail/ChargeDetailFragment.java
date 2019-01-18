@@ -3,6 +3,7 @@ package com.andoresu.cryptoadmin.core.chargedetail;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
+import static com.andoresu.cryptoadmin.utils.MyUtils.glideRequestOptions;
 import static com.andoresu.cryptoadmin.utils.MyUtils.phoneIntent;
 
 public class ChargeDetailFragment extends BaseFragment implements ChargeDetailContract.View{
@@ -72,7 +74,7 @@ public class ChargeDetailFragment extends BaseFragment implements ChargeDetailCo
     private Charge charge;
 
     public ChargeDetailFragment(){
-        actionsListener = new ChargeDetailPresenter(this, getContext());
+
     }
 
     public static ChargeDetailFragment newInstance(Charge charge) {
@@ -93,6 +95,7 @@ public class ChargeDetailFragment extends BaseFragment implements ChargeDetailCo
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){}
+        actionsListener = new ChargeDetailPresenter(this, getContext());
     }
 
     @Nullable
@@ -151,13 +154,9 @@ public class ChargeDetailFragment extends BaseFragment implements ChargeDetailCo
             chargeDenyButton.setVisibility(View.GONE);
         }
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.imagen_disponible);
-        requestOptions.error(R.drawable.imagen_disponible);
-
         Glide.with(this)
-                .load(charge.evidence)
-                .apply(requestOptions)
+                .load(charge.evidence.url)
+                .apply(glideRequestOptions(getContext()))
                 .into(chargeEvidenceImageView);
 
     }
@@ -167,4 +166,5 @@ public class ChargeDetailFragment extends BaseFragment implements ChargeDetailCo
         this.charge = charge;
         setData();
     }
+
 }

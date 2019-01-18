@@ -36,6 +36,7 @@ import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.galleryIntent;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getBitmapFromCameraData;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getPathFromURI;
+import static com.andoresu.cryptoadmin.utils.MyUtils.glideRequestOptions;
 
 public class PurchaseDetailFragment extends BaseFragment implements PurchaseDetailContract.View{
 
@@ -173,13 +174,9 @@ public class PurchaseDetailFragment extends BaseFragment implements PurchaseDeta
             selectPurchaseEvidenceButton.setVisibility(View.GONE);
         }
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.imagen_disponible);
-        requestOptions.error(R.drawable.imagen_disponible);
-
         Glide.with(this)
-                .load(purchase.evidence)
-                .apply(requestOptions)
+                .load(purchase.evidence.url)
+                .apply(glideRequestOptions(getContext()))
                 .into(purchaseEvidenceImageView);
 
         purchaseApproveButton.setOnClickListener(view -> {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import butterknife.ButterKnife;
 import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.galleryIntent;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getPathFromURI;
+import static com.andoresu.cryptoadmin.utils.MyUtils.glideRequestOptions;
 
 public class SaleDetailFragment extends BaseFragment implements SaleDetailContract.View{
 
@@ -185,18 +187,14 @@ public class SaleDetailFragment extends BaseFragment implements SaleDetailContra
             selectSaleEvidenceButton.setVisibility(View.GONE);
         }
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.imagen_disponible);
-        requestOptions.error(R.drawable.imagen_disponible);
-
         Glide.with(this)
-                .load(sale.transferEvidence)
-                .apply(requestOptions)
+                .load(sale.transferEvidence.url)
+                .apply(glideRequestOptions(getContext()))
                 .into(saleTransferEvidenceImageView);
 
         Glide.with(this)
-                .load(sale.depositEvidence)
-                .apply(requestOptions)
+                .load(sale.depositEvidence.url)
+                .apply(glideRequestOptions(getContext()))
                 .into(saleDepositEvidenceImageView);
 
         saleApproveButton.setOnClickListener(view -> {

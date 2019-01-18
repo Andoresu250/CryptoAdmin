@@ -2,6 +2,7 @@ package com.andoresu.cryptoadmin.core.purchase;
 
 
 
+import com.andoresu.cryptoadmin.core.purchase.data.Purchase;
 import com.andoresu.cryptoadmin.core.purchase.data.PurchasesResponse;
 
 import java.util.Map;
@@ -27,7 +28,7 @@ public interface PurchasesService {
 
     @Multipart
     @PUT("purchases/{id}/approve")
-    Observable<Response<ResponseBody>> approve(@Path("id") String id, @Part MultipartBody.Part evidence);
+    Observable<Response<Purchase>> approve(@Path("id") String id, @Part MultipartBody.Part evidence);
 
     @PUT("purchases/{id}/deny")
     Observable<Response<ResponseBody>> deny(@Path("id") String id);

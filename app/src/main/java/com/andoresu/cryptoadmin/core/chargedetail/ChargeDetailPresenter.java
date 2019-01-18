@@ -41,9 +41,10 @@ public class ChargeDetailPresenter implements ChargeDetailContract.UserActionsLi
                     @Override
                     public void onNext(Response<ResponseBody> responseBodyResponse) {
                         super.onNext(responseBodyResponse);
-                        if(responseBodyResponse.isSuccessful()){
+                        if(responseBodyResponse.isSuccessful()) {
                             charge.state = Charge.STATE_APPROVED;
                             chargeDetailView.showCharge(charge);
+                            chargeDetailView.showMessage("Recarga aprobada exitosamente");
                         }
                     }
                 });
@@ -62,6 +63,7 @@ public class ChargeDetailPresenter implements ChargeDetailContract.UserActionsLi
                         if(responseBodyResponse.isSuccessful()){
                             charge.state = Charge.STATE_DENIED;
                             chargeDetailView.showCharge(charge);
+                            chargeDetailView.showMessage("Recarga rechazada exitosamente");
                         }
                     }
                 });
