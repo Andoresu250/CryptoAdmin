@@ -62,7 +62,7 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
     private int currentPage = PAGE_START;
 
     public PurchasesFragment(){
-        actionsListener = new PurchasesPresenter(this, getContext());
+
     }
 
     public static PurchasesFragment newInstance(PurchaseContract.InteractionListener interactionListener) {
@@ -79,6 +79,7 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){}
+        actionsListener = new PurchasesPresenter(this, getContext());
     }
 
     @Nullable
@@ -107,7 +108,6 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
 
     @Override
     public void showPurchases(PurchasesResponse purchasesResponse) {
-        this.purchaseAdapter.clear();
         this.purchaseAdapter.setPurchasesResponse(purchasesResponse);
     }
 

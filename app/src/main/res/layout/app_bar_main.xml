@@ -35,8 +35,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<include layout="@layout/content_main" />-->
-
     <FrameLayout
         android:id="@+id/mainFragment"
         android:layout_height="0dp"

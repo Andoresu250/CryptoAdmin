@@ -103,7 +103,6 @@ public class SalesFragment extends BaseFragment implements SaleContract.View, Sw
 
     @Override
     public void showSales(SalesResponse salesResponse) {
-        this.saleAdapter.clear();
         this.saleAdapter.setSalesResponse(salesResponse);
     }
 

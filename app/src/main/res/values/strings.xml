@@ -107,5 +107,13 @@
     <string name="input_name">Nombre</string>
     <string name="input_email">Email</string>
     <string name="input_password_confirmation">Confirmar Contraseña</string>
+    <string name="input_marketCap">Limite de Mercado</string>
+    <string name="input_dailyTransactions">Transaciones Diarias</string>
+    <string name="input_activeAccounts">Cuentas Activas</string>
+    <string name="input_supportedCountries">Paises Soportados</string>
+    <string name="notices">Noticias</string>
+    <string name="big_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum</string>
+    <string name="input_title">Titulo</string>
+    <string name="input_body">Cuerpo</string>
 
 </resources>

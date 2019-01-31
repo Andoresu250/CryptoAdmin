@@ -27,6 +27,10 @@ import com.andoresu.cryptoadmin.core.charges.ChargesFragment;
 import com.andoresu.cryptoadmin.core.chargedetail.ChargeDetailFragment;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
 import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
+import com.andoresu.cryptoadmin.core.noticedetail.NoticeDetailFragment;
+import com.andoresu.cryptoadmin.core.notices.NoticesContract;
+import com.andoresu.cryptoadmin.core.notices.NoticesFragment;
+import com.andoresu.cryptoadmin.core.notices.data.Notice;
 import com.andoresu.cryptoadmin.core.profile.ProfileContract;
 import com.andoresu.cryptoadmin.core.profile.ProfileFragment;
 import com.andoresu.cryptoadmin.core.purchasedetail.PurchaseDetailFragment;
@@ -62,7 +66,7 @@ public class MainActivity extends BaseActivity implements
         ChargesContract.InteractionListener,
         PurchaseContract.InteractionListener,
         SaleContract.InteractionListener,
-        ProfileContract.InteractionListener {
+        ProfileContract.InteractionListener, NoticesContract.InteractionListener {
 
     String TAG = "CRYPTO_" + MainActivity.class.getSimpleName();
 
@@ -71,9 +75,6 @@ public class MainActivity extends BaseActivity implements
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
-//    @BindView(R.id.fab)
-//    FloatingActionButton fab;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -172,6 +173,9 @@ public class MainActivity extends BaseActivity implements
             case R.id.navPurchase:
                 setPurchasesFragment();
                 break;
+            case R.id.navNotices:
+                setNoticesFragment();
+                break;
             case R.id.navSettings:
                 setSettingFragment();
                 break;
@@ -239,6 +243,11 @@ public class MainActivity extends BaseActivity implements
         changeFragment(purchasesFragment);
     }
 
+    private void setNoticesFragment(){
+        NoticesFragment noticesFragment = NoticesFragment.newInstance(this);
+        changeFragment(noticesFragment);
+    }
+
     private void setPurchaseDetailFragment(Purchase purchase){
         PurchaseDetailFragment purchaseDetailFragment = PurchaseDetailFragment.newInstance(purchase);
         changeFragment(purchaseDetailFragment);
@@ -252,6 +261,11 @@ public class MainActivity extends BaseActivity implements
     private void setSaleDetailFragment(Sale sale){
         SaleDetailFragment saleDetailFragment = SaleDetailFragment.newInstance(sale);
         changeFragment(saleDetailFragment);
+    }
+
+    private void setNoticeDetailFragment(Notice notice){
+        NoticeDetailFragment noticeDetailFragment = NoticeDetailFragment.newInstance(notice);
+        changeFragment(noticeDetailFragment);
     }
 
     private void setSettingFragment(){
@@ -288,6 +302,11 @@ public class MainActivity extends BaseActivity implements
     public void updateUserName(User user) {
         this.user = user;
         setUserNameToMenu();
+    }
+
+    @Override
+    public void goToNoticeDetail(Notice notice) {
+        setNoticeDetailFragment(notice);
     }
 
 

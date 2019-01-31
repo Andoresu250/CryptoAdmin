@@ -20,6 +20,11 @@
             android:id="@+id/navPurchase"
             android:icon="@drawable/ic_purchase"
             android:title="@string/purchases" />
+        <item
+            android:id="@+id/navNotices"
+            android:icon="@drawable/ic_newspaper"
+            android:title="@string/notices" />
+
     </group>
 
     <item android:title="@string/config">

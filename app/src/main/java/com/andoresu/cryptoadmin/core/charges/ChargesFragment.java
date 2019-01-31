@@ -107,7 +107,6 @@ public class ChargesFragment extends BaseFragment implements ChargesContract.Vie
 
     @Override
     public void showCharges(ChargesResponse chargesResponse) {
-        this.chargeAdapter.clear();
         this.chargeAdapter.setChargesResponse(chargesResponse);
     }
 

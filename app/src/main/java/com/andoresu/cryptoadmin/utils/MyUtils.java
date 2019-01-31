@@ -69,6 +69,10 @@ public class MyUtils {
         return removeTrailingLineFeed(Html.fromHtml(String.format(Html.toHtml(new SpannedString(context.getText(id))), args)));
     }
 
+    public static RequestBody createPartFromString (String partString) {
+        return RequestBody.create(MultipartBody.FORM, partString);
+    }
+
     public static boolean checkNullEmpty(String s) {
         return null == s || s.trim().isEmpty();
     }

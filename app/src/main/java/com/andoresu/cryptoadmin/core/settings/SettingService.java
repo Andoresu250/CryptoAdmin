@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 
 public interface SettingService {
 
-    @GET("settings/")
+    @GET("settings?pretty=false")
     Observable<Response<Setting>> get();
 
     @POST("settings/")

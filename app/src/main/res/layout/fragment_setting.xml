@@ -132,12 +132,95 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/marketCapTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activeTradersTextInputLayout">
+
+                <EditText
+                    android:id="@+id/marketCapEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_marketCap"
+                    android:imeActionId="123"
+                    android:imeOptions="actionSend"
+                    style="@style/BaseEditText"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/dailyTransactionsTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/marketCapTextInputLayout">
+
+                <EditText
+                    android:id="@+id/dailyTransactionsEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_dailyTransactions"
+                    android:imeActionId="123"
+                    android:imeOptions="actionSend"
+                    style="@style/BaseEditText"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/activeAccountsTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dailyTransactionsTextInputLayout">
+
+                <EditText
+                    android:id="@+id/activeAccountsEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_activeAccounts"
+                    android:imeActionId="123"
+                    android:imeOptions="actionSend"
+                    style="@style/BaseEditText"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/supportedCountriesTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activeAccountsTextInputLayout">
+
+                <EditText
+                    android:id="@+id/supportedCountriesEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_supportedCountries"
+                    android:imeActionId="123"
+                    android:imeOptions="actionSend"
+                    style="@style/BaseEditText"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/saveSettingButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activeTradersTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/supportedCountriesTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/PrimaryButton"

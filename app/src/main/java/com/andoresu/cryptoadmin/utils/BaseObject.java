@@ -36,4 +36,12 @@ public class BaseObject implements Serializable {
     public String getCreatedAt(){
         return new SimpleDateFormat(DATE_FORMAT_FULL).format(createdAt);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof BaseObject){
+            return id.equals(((BaseObject) obj).id);
+        }
+        return false;
+    }
 }

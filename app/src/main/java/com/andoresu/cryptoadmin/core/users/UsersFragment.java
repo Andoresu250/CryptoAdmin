@@ -103,7 +103,6 @@ public class UsersFragment extends BaseFragment implements UsersContract.View, S
 
     @Override
     public void showUsers(UsersResponse usersResponse) {
-        this.userAdapter.clear();
         this.userAdapter.setUsersResponse(usersResponse);
     }
 

@@ -40,6 +40,14 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     TextInputLayout hourVolumeTextInputLayout;
     @BindView(R.id.activeTradersTextInputLayout)
     TextInputLayout activeTradersTextInputLayout;
+    @BindView(R.id.marketCapTextInputLayout)
+    TextInputLayout marketCapTextInputLayout;
+    @BindView(R.id.dailyTransactionsTextInputLayout)
+    TextInputLayout dailyTransactionsTextInputLayout;
+    @BindView(R.id.activeAccountsTextInputLayout)
+    TextInputLayout activeAccountsTextInputLayout;
+    @BindView(R.id.supportedCountriesTextInputLayout)
+    TextInputLayout supportedCountriesTextInputLayout;
 
     @BindView(R.id.lastTradePriceEditText)
     EditText lastTradePriceEditText;
@@ -51,6 +59,14 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     EditText hourVolumeEditText;
     @BindView(R.id.activeTradersEditText)
     EditText activeTradersEditText;
+    @BindView(R.id.marketCapEditText)
+    EditText marketCapEditText;
+    @BindView(R.id.dailyTransactionsEditText)
+    EditText dailyTransactionsEditText;
+    @BindView(R.id.activeAccountsEditText)
+    EditText activeAccountsEditText;
+    @BindView(R.id.supportedCountriesEditText)
+    EditText supportedCountriesEditText;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -105,7 +121,10 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     }
 
     private Setting buildSetting(){
-        return new Setting(lastTradePriceEditText.getText().toString(), purchasePercentageEditText.getText().toString(), salePercentageEditText.getText().toString(), hourVolumeEditText.getText().toString(), activeTradersEditText.getText().toString());
+        return new Setting(lastTradePriceEditText.getText().toString(), purchasePercentageEditText.getText().toString(),
+                salePercentageEditText.getText().toString(), hourVolumeEditText.getText().toString(),
+                activeTradersEditText.getText().toString(), marketCapEditText.getText().toString(), dailyTransactionsEditText.getText().toString(),
+                activeAccountsEditText.getText().toString(), supportedCountriesEditText.getText().toString());
     }
 
     @Override
@@ -124,6 +143,11 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
         salePercentageEditText.setText(setting.salePercentage.toString());
         hourVolumeEditText.setText(setting.hourVolume.toString());
         activeTradersEditText.setText(setting.activeTraders.toString());
+        marketCapEditText.setText(setting.marketCap.toString());
+        dailyTransactionsEditText.setText(setting.dailyTransactions.toString());
+        activeAccountsEditText.setText(setting.activeAccounts.toString());
+        supportedCountriesEditText.setText(setting.supportedCountries.toString());
+
     }
 
     @Override
@@ -133,6 +157,10 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
         salePercentageTextInputLayout.setError(getFirst(settingErrors.salePercentage));
         hourVolumeTextInputLayout.setError(getFirst(settingErrors.hourVolume));
         activeTradersTextInputLayout.setError(getFirst(settingErrors.activeTraders));
+        marketCapTextInputLayout.setError(getFirst(settingErrors.marketCap));
+        dailyTransactionsTextInputLayout.setError(getFirst(settingErrors.dailyTransactions));
+        activeAccountsTextInputLayout.setError(getFirst(settingErrors.activeAccounts));
+        supportedCountriesTextInputLayout.setError(getFirst(settingErrors.supportedCountries));
     }
 
     @Override

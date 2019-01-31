@@ -10,5 +10,9 @@ public class SettingErrors {
     public List<String> salePercentage = new ArrayList<>();
     public List<String> hourVolume = new ArrayList<>();
     public List<String> activeTraders = new ArrayList<>();
+    public List<String> marketCap = new ArrayList<>();
+    public List<String> dailyTransactions = new ArrayList<>();
+    public List<String> activeAccounts = new ArrayList<>();
+    public List<String> supportedCountries = new ArrayList<>();
 
 }
