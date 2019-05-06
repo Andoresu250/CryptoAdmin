@@ -13,6 +13,11 @@
             android:icon="@drawable/ic_money"
             android:title="@string/charges" />
         <item
+            android:id="@+id/navBtcCharges"
+            android:icon="@drawable/ic_bitcoin"
+            android:title="@string/btcCharges" />
+
+        <item
             android:id="@+id/navSale"
             android:icon="@drawable/ic_sale"
             android:title="@string/sales" />
@@ -37,6 +42,10 @@
                 android:id="@+id/navProfile"
                 android:icon="@drawable/ic_profile"
                 android:title="@string/profile" />
+            <item
+                android:id="@+id/navChargePoints"
+                android:icon="@drawable/ic_bank"
+                android:title="@string/charge_points" />
             <item
                 android:id="@+id/navLogout"
                 android:icon="@drawable/ic_logout"

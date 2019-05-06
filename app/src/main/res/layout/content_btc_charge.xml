@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/saleDateTextView"
+        android:id="@+id/chargeDateTextView"
         style="@style/BaseEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,75 +15,63 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/saleValueTextView"
+        android:id="@+id/chargeAmountTextView"
         style="@style/BaseEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/value_label"
+        android:text="@string/amount_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleDateTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chargeDateTextView"
         />
 
     <TextView
-        android:id="@+id/saleBtcTextView"
-        style="@style/BaseEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btc_label"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleValueTextView"
-        />
-
-    <TextView
-        android:id="@+id/saleStateTextView"
+        android:id="@+id/chargeStateTextView"
         style="@style/BaseEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/state_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleBtcTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chargeAmountTextView"
         />
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/saleTransferEvidenceTextView"
+        android:id="@+id/chargeEvidenceTextView"
         style="@style/BaseEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/transfer_evidence_label"
+        android:text="@string/evidence_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleStateTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chargeStateTextView"
         />
 
     <ImageView
-        android:visibility="gone"
-        android:id="@+id/saleTransferEvidenceImageView"
+        android:id="@+id/chargeEvidenceImageView"
         android:src="@drawable/imagen_disponible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleTransferEvidenceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chargeEvidenceTextView"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/saleDepositEvidenceTextView"
+        android:id="@+id/chargeQRTextView"
         style="@style/BaseEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/deposit_evidence_label"
+        android:text="@string/qr_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleTransferEvidenceImageView"
+        app:layout_constraintTop_toBottomOf="@+id/chargeEvidenceImageView"
         />
 
     <ImageView
-        android:id="@+id/saleDepositEvidenceImageView"
+        android:id="@+id/chargeQRImageView"
         android:src="@drawable/imagen_disponible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleDepositEvidenceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chargeQRTextView"
         tools:ignore="ContentDescription" />
 
 </android.support.constraint.ConstraintLayout>

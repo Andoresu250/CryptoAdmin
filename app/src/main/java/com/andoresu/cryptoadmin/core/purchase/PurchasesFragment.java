@@ -22,6 +22,7 @@ import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +100,8 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
         actionsListener.getPurchases(getPurchasesOptions());
         purchaseStateSpinner.setItems(ALL_PURCHASE, PENDING_PURCHASE, APPROVED_PURCHASE, DENIED_PURCHASE);
         purchaseStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
+            currentPage = 1;
+            purchaseAdapter.set(new ArrayList<>());
             Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
             actionsListener.getPurchases(getPurchasesOptions());

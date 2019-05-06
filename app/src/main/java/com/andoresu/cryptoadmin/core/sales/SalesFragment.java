@@ -18,6 +18,7 @@ import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,6 +95,8 @@ public class SalesFragment extends BaseFragment implements SaleContract.View, Sw
         actionsListener.getSales(getSalesOptions());
         saleStateSpinner.setItems(ALL_SALES, PENDING_SALES, APPROVED_SALES, DENIED_SALES);
         saleStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
+            currentPage = 1;
+            saleAdapter.set(new ArrayList<>());
             Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
             actionsListener.getSales(getSalesOptions());

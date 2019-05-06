@@ -447,7 +447,16 @@ public class MyUtils {
 
     @SuppressLint("DefaultLocale")
     public static String toMoney(double price, String currency){
-        return (currency + " " + String.format("%,.2f", price)).replaceAll(",00", "");
+        if(price < 1){
+            return Double.toString(price);
+        }
+//        return (currency + " " + String.format("%,.2f", price)).replaceAll(",00", "");
+        return (currency + " " + String.format("%,.2f", price));
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static String toMoney(String price, String currency){
+        return currency + " " + price;
     }
 
     public static <T> T getFirst(List<T> list){

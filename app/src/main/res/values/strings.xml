@@ -115,5 +115,19 @@
     <string name="big_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum</string>
     <string name="input_title">Titulo</string>
     <string name="input_body">Cuerpo</string>
+    <string name="btcCharges">Recargas BTC</string>
+    <string name="accept">Aceptar</string>
+    <string name="complete">Completar</string>
+    <string name="qr_label">Codigo QR:</string>
+    <string name="addQr">Agregar QR</string>
+    <string name="input_accountOwner">Titular</string>
+    <string name="input_accountBank">Banco</string>
+    <string name="input_accountNumber">Numero de cuenta</string>
+    <string name="charge_points">Puntos de Carga</string>
+    <string name="input_country">Pais</string>
+    <string name="input_accountType">Tipo de cuenta</string>
+    <string name="input_accountOwnerIdentification">Identificacion</string>
+    <string name="input_accountIban">Iban</string>
+    <string name="detail">Ver Detalle</string>
 
 </resources>

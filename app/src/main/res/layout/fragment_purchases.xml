@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".core.MainActivity"
     android:layout_margin="@dimen/activity">
-    <com.jaredrummler.materialspinner.MaterialSpinner
+    <com.jaredrummler.materialspinner.MaterialSpinner app:ms_hint="Todas las Compras"
         android:id="@+id/purchaseStateSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -6,26 +6,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".core.MainActivity"
     android:layout_margin="@dimen/activity">
-    <com.jaredrummler.materialspinner.MaterialSpinner app:ms_hint="Todas las Recargas"
-        android:id="@+id/chargeStateSpinner"
+    <com.jaredrummler.materialspinner.MaterialSpinner app:ms_hint="Todos los paises"
+        android:id="@+id/countrySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/chargesSwipeRefreshLayout"
+        android:id="@+id/chargePointsSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/chargeStateSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/countrySpinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/chargesRecyclerView"
+            android:id="@+id/chargePointsRecyclerView"
             android:scrollbars="vertical"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -33,5 +33,16 @@
         </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addChargePointFloatingActionButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add"
+        app:fabSize="normal"
+        app:fabCustomSize="40dp"
+        />
 
 </android.support.constraint.ConstraintLayout>

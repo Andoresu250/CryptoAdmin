@@ -21,7 +21,16 @@ import android.widget.Toast;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.authorization.data.User;
 import com.andoresu.cryptoadmin.authorization.login.LoginActivity;
+import com.andoresu.cryptoadmin.chargepointdetail.ChargePointDetailContrant;
+import com.andoresu.cryptoadmin.chargepointdetail.ChargePointDetailFragment;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
+import com.andoresu.cryptoadmin.core.btcchargedetail.BtcChargeDetailFragment;
+import com.andoresu.cryptoadmin.core.btccharges.BtcChargesContract;
+import com.andoresu.cryptoadmin.core.btccharges.BtcChargesFragment;
+import com.andoresu.cryptoadmin.core.btccharges.data.BtcCharge;
+import com.andoresu.cryptoadmin.core.chargepoints.ChargePointsContract;
+import com.andoresu.cryptoadmin.core.chargepoints.ChargePointsFragment;
+import com.andoresu.cryptoadmin.core.chargepoints.data.ChargePoint;
 import com.andoresu.cryptoadmin.core.charges.ChargesContract;
 import com.andoresu.cryptoadmin.core.charges.ChargesFragment;
 import com.andoresu.cryptoadmin.core.chargedetail.ChargeDetailFragment;
@@ -66,7 +75,7 @@ public class MainActivity extends BaseActivity implements
         ChargesContract.InteractionListener,
         PurchaseContract.InteractionListener,
         SaleContract.InteractionListener,
-        ProfileContract.InteractionListener, NoticesContract.InteractionListener {
+        ProfileContract.InteractionListener, NoticesContract.InteractionListener, BtcChargesContract.InteractionListener, ChargePointsContract.InteractionListener {
 
     String TAG = "CRYPTO_" + MainActivity.class.getSimpleName();
 
@@ -114,7 +123,7 @@ public class MainActivity extends BaseActivity implements
 
         actionsListener = new MainPresenter(this, this, SecureData.getToken());
 
-        setUsersFragment();
+        setChargePointsFragment();
 
     }
 
@@ -167,6 +176,9 @@ public class MainActivity extends BaseActivity implements
             case R.id.navCharges:
                 setChargesFragment();
                 break;
+            case R.id.navBtcCharges:
+                setBtcChargesFragment();
+                break;
             case R.id.navSale:
                 setSalesFragment();
                 break;
@@ -178,6 +190,9 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.navSettings:
                 setSettingFragment();
+                break;
+            case R.id.navChargePoints:
+                setChargePointsFragment();
                 break;
             case R.id.navProfile:
                 setProfileFragment();
@@ -235,6 +250,26 @@ public class MainActivity extends BaseActivity implements
 
     private void setChargeDetailFragment(Charge charge){
         ChargeDetailFragment chargeDetailFragment = ChargeDetailFragment.newInstance(charge);
+        changeFragment(chargeDetailFragment);
+    }
+
+    private void setChargePointsFragment(){
+        ChargePointsFragment fragment = ChargePointsFragment.newInstance(this);
+        changeFragment(fragment);
+    }
+
+    private void setChargePointDetailFragment(ChargePoint chargePoint){
+        ChargePointDetailFragment fragment = ChargePointDetailFragment.newInstance(chargePoint);
+        changeFragment(fragment);
+    }
+
+    private void setBtcChargesFragment(){
+        BtcChargesFragment chargesFragment = BtcChargesFragment.newInstance(this);
+        changeFragment(chargesFragment);
+    }
+
+    private void setBtcChargeDetailFragment(BtcCharge charge){
+        BtcChargeDetailFragment chargeDetailFragment = BtcChargeDetailFragment.newInstance(charge);
         changeFragment(chargeDetailFragment);
     }
 
@@ -307,6 +342,16 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void goToNoticeDetail(Notice notice) {
         setNoticeDetailFragment(notice);
+    }
+
+    @Override
+    public void goToChargeDetail(BtcCharge btcCharge) {
+        setBtcChargeDetailFragment(btcCharge);
+    }
+
+    @Override
+    public void goToChargePoint(ChargePoint chargePoint) {
+        setChargePointDetailFragment(chargePoint);
     }
 
 

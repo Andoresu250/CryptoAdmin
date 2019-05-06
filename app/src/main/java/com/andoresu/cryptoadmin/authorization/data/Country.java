@@ -15,4 +15,10 @@ public class Country extends BaseObject implements Serializable {
 
     public Country(){}
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+
 }

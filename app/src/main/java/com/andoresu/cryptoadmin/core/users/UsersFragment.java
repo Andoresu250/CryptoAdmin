@@ -18,6 +18,7 @@ import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,8 +95,10 @@ public class UsersFragment extends BaseFragment implements UsersContract.View, S
         actionsListener.getUsers(getUsersOptions());
         userStateSpinner.setItems(ALL_USERS, ACTIVATED_USERS, DEACTIVATED_USERS);
         userStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
+            currentPage = 1;
             Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
+            userAdapter.set(new ArrayList<>());
             actionsListener.getUsers(getUsersOptions());
         });
         return view;
