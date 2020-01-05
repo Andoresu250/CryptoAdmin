@@ -1,4 +1,4 @@
-package com.andoresu.cryptoadmin.chargepointdetail.data;
+package com.andoresu.cryptoadmin.core.chargepointdetail.data;
 
 public class ChargePointErrorsResponse {
 

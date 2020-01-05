@@ -29,6 +29,10 @@
             android:id="@+id/navNotices"
             android:icon="@drawable/ic_newspaper"
             android:title="@string/notices" />
+        <item
+            android:id="@+id/navContacts"
+            android:icon="@drawable/ic_contacts"
+            android:title="@string/contacts" />
 
     </group>
 

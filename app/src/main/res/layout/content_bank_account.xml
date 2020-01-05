@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bank_number_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bankNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/bankNameTextView"
         />
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bank_owner_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bankNumberTextView"
+        app:layout_constraintTop_toBottomOf="@id/bankNumberTextView"
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bank_owner_identification_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bankOwnerNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/bankOwnerNameTextView"
         />
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bank_owner_document_type_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bankOwnerIdentificationTextView"
+        app:layout_constraintTop_toBottomOf="@id/bankOwnerIdentificationTextView"
         />
 
 

@@ -18,6 +18,7 @@ import com.andoresu.cryptoadmin.core.purchase.PurchasesFragment;
 import com.andoresu.cryptoadmin.core.purchase.PurchasesPresenter;
 import com.andoresu.cryptoadmin.core.purchase.data.Purchase;
 import com.andoresu.cryptoadmin.core.purchase.data.PurchasesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -29,12 +30,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PurchasesFragment extends BaseFragment implements PurchaseContract.View, SwipeRefreshLayout.OnRefreshListener{
-
-    String TAG = "CRYPTO_" + PurchasesFragment.class.getSimpleName();
-
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
+public class PurchasesFragment extends RecyclerViewFragment<Purchase> implements PurchaseContract.View{
 
     private static final String ALL_PURCHASE = "Todas las Compras";
     private static final String PENDING_PURCHASE = "Compras Pendientes";
@@ -44,23 +40,13 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
     @BindView(R.id.purchaseStateSpinner)
     MaterialSpinner purchaseStateSpinner;
 
-    @BindView(R.id.purchasesRecyclerView)
-    RecyclerView purchasesRecyclerView;
-
-    @BindView(R.id.purchasesSwipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private PurchaseContract.UserActionsListener actionsListener;
 
     private PurchaseContract.InteractionListener interactionListener;
 
     private String selectedItem = ALL_PURCHASE;
 
-    private PurchaseAdapter purchaseAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
+    private PurchasesResponse purchasesResponse;
 
     public PurchasesFragment(){
 
@@ -83,51 +69,31 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
         actionsListener = new PurchasesPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_purchases, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
+        super.handleView();
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        purchasesRecyclerView.setLayoutManager(linearLayoutManager);
-        purchaseAdapter = new PurchaseAdapter(getContext(), item -> interactionListener.goToPurchaseDetail(item));
-        purchasesRecyclerView.setAdapter(purchaseAdapter);
-        purchasesRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
+        viewAdapter = new PurchaseAdapter(getContext(), item -> interactionListener.goToPurchaseDetail(item));
+        listRecyclerView.setAdapter(viewAdapter);
+        onRefresh();
         actionsListener.getPurchases(getPurchasesOptions());
         purchaseStateSpinner.setItems(ALL_PURCHASE, PENDING_PURCHASE, APPROVED_PURCHASE, DENIED_PURCHASE);
         purchaseStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
-            currentPage = 1;
-            purchaseAdapter.set(new ArrayList<>());
-            Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
-            actionsListener.getPurchases(getPurchasesOptions());
+            onRefresh(true);
         });
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_purchases;
     }
 
     @Override
     public void showPurchases(PurchasesResponse purchasesResponse) {
-        this.purchaseAdapter.setPurchasesResponse(purchasesResponse);
-    }
-
-    @Override
-    public void showProgressIndicator(boolean active) {
-        swipeRefreshLayout.setRefreshing(active);
-        isLoading = active;
-    }
-
-    @Override
-    public void showGlobalError(ErrorResponse errorResponse) {
-
-    }
-
-    @Override
-    public void onLogoutFinish() {
-
+        this.purchasesResponse = purchasesResponse;
+        viewAdapter.addAll(purchasesResponse.purchases);
+        isEmpty();
     }
 
     private Map<String, String> getPurchasesOptions(){
@@ -148,37 +114,22 @@ public class PurchasesFragment extends BaseFragment implements PurchaseContract.
     }
 
     @Override
-    public void onRefresh() {
+    public int getTotalItems() {
+        return purchasesResponse.totalCount;
+    }
+
+    @Override
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
+        }
         actionsListener.getPurchases(getPurchasesOptions());
     }
+
 
     public void setInteractionListener(PurchaseContract.InteractionListener interactionListener) {
         this.interactionListener = interactionListener;
     }
 
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                actionsListener.getPurchases(getPurchasesOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return purchaseAdapter.purchasesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= purchaseAdapter.purchasesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
-    }
 }

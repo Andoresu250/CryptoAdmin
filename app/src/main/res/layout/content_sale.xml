@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/value_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleDateTextView"
+        app:layout_constraintTop_toBottomOf="@id/saleDateTextView"
         />
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/btc_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleValueTextView"
+        app:layout_constraintTop_toBottomOf="@id/saleValueTextView"
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/state_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleBtcTextView"
+        app:layout_constraintTop_toBottomOf="@id/saleBtcTextView"
         />
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="@string/transfer_evidence_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleStateTextView"
+        app:layout_constraintTop_toBottomOf="@id/saleStateTextView"
         />
 
     <ImageView
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleTransferEvidenceTextView"
+        app:layout_constraintTop_toBottomOf="@id/saleTransferEvidenceTextView"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/deposit_evidence_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleTransferEvidenceImageView"
+        app:layout_constraintTop_toBottomOf="@id/saleTransferEvidenceImageView"
         />
 
     <ImageView
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saleDepositEvidenceTextView"
+        app:layout_constraintTop_toBottomOf="@id/saleDepositEvidenceTextView"
         tools:ignore="ContentDescription" />
 
 </android.support.constraint.ConstraintLayout>

@@ -26,8 +26,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.compileSdkVersion
         vectorDrawables.useSupportLibrary = true
-        versionCode 5
-        versionName "1.0.6"
+        versionCode 6
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -85,6 +85,8 @@ dependencies {
 
     /* FileUtils*/
     implementation 'commons-io:commons-io:2.4'
+
+    implementation 'com.github.psinetron:slycalendarview:0.0.9'
 
 //    //google maps
 //    implementation "com.google.android.gms:play-services-location:$rootProject.playServicesLocation"

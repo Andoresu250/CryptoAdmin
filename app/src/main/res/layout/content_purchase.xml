@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/value_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchaseDateTextView"
+        app:layout_constraintTop_toBottomOf="@id/purchaseDateTextView"
         />
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/btc_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchaseValueTextView"
+        app:layout_constraintTop_toBottomOf="@id/purchaseValueTextView"
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/state_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchaseBtcTextView"
+        app:layout_constraintTop_toBottomOf="@id/purchaseBtcTextView"
         />
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="@string/wallet_url_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchaseStateTextView"
+        app:layout_constraintTop_toBottomOf="@id/purchaseStateTextView"
         />
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:text="@string/evidence_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchaseWalletUrlTextView"
+        app:layout_constraintTop_toBottomOf="@id/purchaseWalletUrlTextView"
         />
 
     <ImageView
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchaseEvidenceTextView"
+        app:layout_constraintTop_toBottomOf="@id/purchaseEvidenceTextView"
         tools:ignore="ContentDescription" />
 
 </android.support.constraint.ConstraintLayout>

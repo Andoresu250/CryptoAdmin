@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="@string/code_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countryNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/countryNameTextView"
          />
 
     <TextView
@@ -31,9 +31,9 @@
 
         android:layout_marginEnd="8dp"
         android:text="@string/moneyCode_label"
-        app:layout_constraintEnd_toStartOf="@+id/countrySymbolTextView"
-        app:layout_constraintStart_toEndOf="@+id/countryCodeTextView"
-        app:layout_constraintTop_toTopOf="@+id/countryCodeTextView" />
+        app:layout_constraintEnd_toStartOf="@id/countrySymbolTextView"
+        app:layout_constraintStart_toEndOf="@id/countryCodeTextView"
+        app:layout_constraintTop_toTopOf="@id/countryCodeTextView" />
 
     <TextView
         android:id="@+id/countrySymbolTextView"
@@ -43,6 +43,6 @@
         android:layout_marginEnd="8dp"
         android:text="@string/symbol_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/countryCodeTextView" />
+        app:layout_constraintTop_toTopOf="@id/countryCodeTextView" />
 
 </android.support.constraint.ConstraintLayout>

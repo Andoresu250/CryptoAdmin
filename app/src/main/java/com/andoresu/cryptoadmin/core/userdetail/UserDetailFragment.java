@@ -101,13 +101,14 @@ public class UserDetailFragment extends BaseFragment implements UserDetailContra
         actionsListener = new UserDetailPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_detail, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
         setData();
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_user_detail;
     }
 
     @Override

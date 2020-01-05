@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
 import com.andoresu.cryptoadmin.core.charges.data.ChargesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getText;
 
 
-public class ChargeAdapter extends BaseRecyclerViewAdapter<Charge> {
+public class ChargeAdapter extends RecyclerViewAdapter<Charge> {
 
     public static final String TAG = "CRYPTO_" + ChargeAdapter.class.getSimpleName();
 
@@ -50,15 +51,14 @@ public class ChargeAdapter extends BaseRecyclerViewAdapter<Charge> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<Charge> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<Charge> holder, int position) {
         ChargeViewHolder viewHolder = (ChargeViewHolder) holder;
         Charge charge = getItem(position);
-        viewHolder.personNameTextView.setText(getText(context, R.string.name_label, charge.person.fullName));
-        viewHolder.personCountryTextView.setText(getText(context, R.string.country_label , charge.country.name));
-        viewHolder.chargeDateTextView.setText(getText(context, R.string.date_label , charge.getCreatedAt()));
-        viewHolder.chargeAmountTextView.setText(getText(context, R.string.amount_label , charge.getAmount()));
-        viewHolder.chargeStateTextView.setText(getText(context, R.string.state_label , charge.state));
+        viewHolder.personNameTextView.setText(getText(R.string.name_label, charge.person.fullName));
+        viewHolder.personCountryTextView.setText(getText(R.string.country_label , charge.country.name));
+        viewHolder.chargeDateTextView.setText(getText(R.string.date_label , charge.getCreatedAt()));
+        viewHolder.chargeAmountTextView.setText(getText(R.string.amount_label , charge.getAmount()));
+        viewHolder.chargeStateTextView.setText(getText(R.string.state_label , charge.state));
     }
 
     public void setChargesResponse(ChargesResponse chargesResponse){

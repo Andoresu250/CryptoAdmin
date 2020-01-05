@@ -6,30 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    android:padding="@dimen/activity"
     android:background="?attr/colorBackground"
     tools:context=".core.MainActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
-            />
+        <include layout="@layout/content_progressbar" />
 
         <android.support.constraint.ConstraintLayout
+            android:padding="10dp"
             android:id="@+id/settingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/countryLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/countrySpinner"
+                android:text="@string/input_country"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/countrySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/countryLabelTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:ms_hint="Seleccione [...]"
+                 />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/lastTradePriceTextInputLayout"
@@ -38,7 +50,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/countrySpinner">
 
                 <EditText
                     android:id="@+id/lastTradePriceEditText"
@@ -58,7 +70,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lastTradePriceTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/lastTradePriceTextInputLayout">
 
                 <EditText
                     android:id="@+id/purchasePercentageEditText"
@@ -67,7 +79,7 @@
                     android:hint="@string/input_purchasePercentage"
                     android:nextFocusDown="@id/salePercentageTextInputLayout"
                     style="@style/BaseEditText"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal|numberSigned" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -78,7 +90,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/purchasePercentageTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/purchasePercentageTextInputLayout">
 
                 <EditText
                     android:id="@+id/salePercentageEditText"
@@ -87,7 +99,7 @@
                     android:hint="@string/input_salePercentage"
                     android:nextFocusDown="@id/hourVolumeTextInputLayout"
                     style="@style/BaseEditText"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal|numberSigned" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -98,7 +110,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/salePercentageTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/salePercentageTextInputLayout">
 
                 <EditText
                     android:id="@+id/hourVolumeEditText"
@@ -118,7 +130,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hourVolumeTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/hourVolumeTextInputLayout">
 
                 <EditText
                     android:id="@+id/activeTradersEditText"
@@ -139,7 +151,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activeTradersTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/activeTradersTextInputLayout">
 
                 <EditText
                     android:id="@+id/marketCapEditText"
@@ -160,7 +172,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/marketCapTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/marketCapTextInputLayout">
 
                 <EditText
                     android:id="@+id/dailyTransactionsEditText"
@@ -181,7 +193,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dailyTransactionsTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/dailyTransactionsTextInputLayout">
 
                 <EditText
                     android:id="@+id/activeAccountsEditText"
@@ -202,7 +214,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activeAccountsTextInputLayout">
+                app:layout_constraintTop_toBottomOf="@id/activeAccountsTextInputLayout">
 
                 <EditText
                     android:id="@+id/supportedCountriesEditText"
@@ -220,7 +232,7 @@
                 android:id="@+id/saveSettingButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/supportedCountriesTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@id/supportedCountriesTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/PrimaryButton"
@@ -230,7 +242,7 @@
 
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
 
 

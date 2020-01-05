@@ -12,27 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.andoresu.cryptoadmin.R;
+import com.andoresu.cryptoadmin.core.notices.data.Notice;
 import com.andoresu.cryptoadmin.core.notices.data.NoticesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NoticesFragment extends BaseFragment implements NoticesContract.View, SwipeRefreshLayout.OnRefreshListener{
-
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
-
-    @BindView(R.id.noticesRecyclerView)
-    RecyclerView noticesRecyclerView;
-
-    @BindView(R.id.noticesSwipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+public class NoticesFragment extends RecyclerViewFragment<Notice> implements NoticesContract.View, SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.addNoticeButton)
     FloatingActionButton addNoticeButton;
@@ -41,11 +35,7 @@ public class NoticesFragment extends BaseFragment implements NoticesContract.Vie
 
     private NoticesContract.InteractionListener interactionListener;
 
-    private NoticeAdapter noticeAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
+    private NoticesResponse noticesResponse;
 
     public NoticesFragment(){}
 
@@ -68,24 +58,18 @@ public class NoticesFragment extends BaseFragment implements NoticesContract.Vie
         actionsListener = new NoticesPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notices, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        noticesRecyclerView.setLayoutManager(linearLayoutManager);
-        noticeAdapter = new NoticeAdapter(getContext(), item -> interactionListener.goToNoticeDetail(item));
-        noticesRecyclerView.setAdapter(noticeAdapter);
-        noticesRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
+    public void handleView() {
+        super.handleView();
+        viewAdapter = new NoticeAdapter(getContext(), item -> interactionListener.goToNoticeDetail(item));
+        listRecyclerView.setAdapter(viewAdapter);
         addNoticeButton.setOnClickListener(view1 -> interactionListener.goToNoticeDetail(null));
+        onRefresh();
+    }
 
-        actionsListener.getNotices(getNoticesOptions());
-        return view;
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_notices;
     }
 
     private Map<String, String> getNoticesOptions(){
@@ -99,38 +83,24 @@ public class NoticesFragment extends BaseFragment implements NoticesContract.Vie
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
+        }
         actionsListener.getNotices(getNoticesOptions());
     }
 
     @Override
     public void showNotices(NoticesResponse noticesResponse) {
-        this.noticeAdapter.setNoticesResponse(noticesResponse);
+        this.noticesResponse = noticesResponse;
+        viewAdapter.addAll(noticesResponse.blogs);
+        isEmpty();
     }
 
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                actionsListener.getNotices(getNoticesOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return noticeAdapter.noticesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= noticeAdapter.noticesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
+    @Override
+    public int getTotalItems() {
+        return noticesResponse.totalCount;
     }
+
 }

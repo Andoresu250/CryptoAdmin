@@ -15,6 +15,8 @@ import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
 import com.andoresu.cryptoadmin.core.btccharges.data.BtcCharge;
 import com.andoresu.cryptoadmin.core.btccharges.data.BtcChargesResponse;
+import com.andoresu.cryptoadmin.core.settingdetail.data.Setting;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -26,12 +28,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BtcChargesFragment extends BaseFragment implements BtcChargesContract.View, SwipeRefreshLayout.OnRefreshListener{
+public class BtcChargesFragment  extends RecyclerViewFragment<BtcCharge> implements BtcChargesContract.View{
 
     String TAG = "CRYPTO_" + BtcChargesFragment.class.getSimpleName();
-
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
 
     private static final String ALL_CHARGES = "Todas las Recargas";
     private static final String PENDING_CHARGES = "Recargas Pendientes";
@@ -43,23 +42,12 @@ public class BtcChargesFragment extends BaseFragment implements BtcChargesContra
     @BindView(R.id.chargeStateSpinner)
     MaterialSpinner chargeStateSpinner;
 
-    @BindView(R.id.chargesRecyclerView)
-    RecyclerView chargesRecyclerView;
-
-    @BindView(R.id.chargesSwipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private BtcChargesContract.UserActionsListener actionsListener;
 
     private BtcChargesContract.InteractionListener interactionListener;
 
     private String selectedItem = ALL_CHARGES;
-
-    private BtcChargeAdapter btcChargeAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
+    private BtcChargesResponse btcChargesResponse;
 
     public BtcChargesFragment(){
         actionsListener = new BtcChargesPresenter(this, getContext());
@@ -81,57 +69,51 @@ public class BtcChargesFragment extends BaseFragment implements BtcChargesContra
         if(bundle != null){}
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_btc_charges, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        chargesRecyclerView.setLayoutManager(linearLayoutManager);
-        btcChargeAdapter = new BtcChargeAdapter(getContext(), item -> interactionListener.goToChargeDetail(item));
-        chargesRecyclerView.setAdapter(btcChargeAdapter);
-        chargesRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
-        actionsListener.getCharges(getChargesOptions());
+    public void handleView() {
+        super.handleView();
+        viewAdapter = new BtcChargeAdapter(getContext(), item -> interactionListener.goToChargeDetail(item));
+        listRecyclerView.setAdapter(viewAdapter);
+        onRefresh();
         chargeStateSpinner.setItems(ALL_CHARGES, PENDING_CHARGES, ACCEPTED_CHARGES, SUCCESSFUL_CHARGES, TO_VALIDATE_CHARGES, DENIED_CHARGES);
         chargeStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
-            currentPage = 1;
-            btcChargeAdapter.set(new ArrayList<>());
-            Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
-            actionsListener.getCharges(getChargesOptions());
+            onRefresh(true);
         });
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_btc_charges;
     }
 
     @Override
     public void showCharges(BtcChargesResponse btcChargesResponse) {
-        for (BtcCharge charge : btcChargesResponse.charges){
-            Log.i(TAG, "showCharges: " + charge.id);
+        this.btcChargesResponse = btcChargesResponse;
+        viewAdapter.addAll(btcChargesResponse.charges);
+        isEmpty();
+    }
+
+    @Override
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
         }
-        this.btcChargeAdapter.setBtcChargesResponse(btcChargesResponse);
+        actionsListener.getCharges(getOptions());
+    }
+
+    @Override
+    public int getTotalItems() {
+        return btcChargesResponse.totalCount;
     }
 
     @Override
     public void showProgressIndicator(boolean active) {
-        swipeRefreshLayout.setRefreshing(active);
-        isLoading = active;
+        showLoading(active);
     }
 
-    @Override
-    public void showGlobalError(ErrorResponse errorResponse) {
-
-    }
-
-    @Override
-    public void onLogoutFinish() {
-
-    }
-
-    private Map<String, String> getChargesOptions(){
+    private Map<String, String> getOptions(){
         Map<String, String> options = new HashMap<>();
         options.put("page", currentPage + "");
         switch (selectedItem){
@@ -155,38 +137,7 @@ public class BtcChargesFragment extends BaseFragment implements BtcChargesContra
         return options;
     }
 
-    @Override
-    public void onRefresh() {
-        actionsListener.getCharges(getChargesOptions());
-    }
-
     public void setInteractionListener(BtcChargesContract.InteractionListener interactionListener) {
         this.interactionListener = interactionListener;
-    }
-
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                actionsListener.getCharges(getChargesOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return btcChargeAdapter.btcChargesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= btcChargeAdapter.btcChargesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
     }
 }

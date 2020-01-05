@@ -1,28 +1,31 @@
-package com.andoresu.cryptoadmin.core.settings;
+package com.andoresu.cryptoadmin.core.settingdetail;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.andoresu.cryptoadmin.R;
+import com.andoresu.cryptoadmin.authorization.data.Country;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
+import com.andoresu.cryptoadmin.core.chargepoints.CountryAdapter;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
 import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
-import com.andoresu.cryptoadmin.core.settings.data.Setting;
+import com.andoresu.cryptoadmin.core.settingdetail.data.Setting;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
+import com.jaredrummler.materialspinner.MaterialSpinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.getFirst;
 
@@ -77,17 +80,29 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     @BindView(R.id.saveSettingButton)
     Button saveSettingButton;
 
+    @BindView(R.id.countrySpinner)
+    MaterialSpinner countrySpinner;
+
+    CountryAdapter countryAdapter;
+
     private SettingContract.UserActionsListener actionsListener;
 
-    private Charge charge;
+    public Setting setting;
 
     public SettingFragment(){}
 
-    public static SettingFragment newInstance() {
+    public static SettingFragment newInstance(Setting setting) {
         Bundle args = new Bundle();
         SettingFragment fragment = new SettingFragment();
         fragment.setArguments(args);
-        fragment.setTitle("Configurar Variables");
+        fragment.setting = setting;
+        if(setting == null){
+            fragment.setTitle("Nueva variable");
+            fragment.setting = new Setting();
+        }else{
+            fragment.setTitle("Editar Variable");
+        }
+
         return fragment;
     }
 
@@ -99,14 +114,15 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
         actionsListener = new SettingPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-        actionsListener.getSetting();
+    public void handleView() {
+        showSetting(setting);
         saveSettingButton.setOnClickListener(view1 -> actionsListener.createSetting(buildSetting()));
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_setting;
     }
 
     @Override
@@ -121,10 +137,14 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     }
 
     private Setting buildSetting(){
-        return new Setting(lastTradePriceEditText.getText().toString(), purchasePercentageEditText.getText().toString(),
+        setting.setData(lastTradePriceEditText.getText().toString(), purchasePercentageEditText.getText().toString(),
                 salePercentageEditText.getText().toString(), hourVolumeEditText.getText().toString(),
                 activeTradersEditText.getText().toString(), marketCapEditText.getText().toString(), dailyTransactionsEditText.getText().toString(),
                 activeAccountsEditText.getText().toString(), supportedCountriesEditText.getText().toString());
+        if(setting.id == null){
+            setting.setCountry(countryAdapter.get(countrySpinner.getSelectedIndex()));
+        }
+        return setting;
     }
 
     @Override
@@ -138,16 +158,43 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     @SuppressLint("SetTextI18n")
     @Override
     public void showSetting(Setting setting) {
-        lastTradePriceEditText.setText(setting.lastTradePrice.toString());
-        purchasePercentageEditText.setText(setting.purchasePercentage.toString());
-        salePercentageEditText.setText(setting.salePercentage.toString());
-        hourVolumeEditText.setText(setting.hourVolume.toString());
-        activeTradersEditText.setText(setting.activeTraders.toString());
-        marketCapEditText.setText(setting.marketCap.toString());
-        dailyTransactionsEditText.setText(setting.dailyTransactions.toString());
-        activeAccountsEditText.setText(setting.activeAccounts.toString());
-        supportedCountriesEditText.setText(setting.supportedCountries.toString());
-
+        if(setting.id != null && setting.country != null){
+            List<Country> countries = new ArrayList<>();
+            countries.add(setting.country);
+            countryAdapter = new CountryAdapter(getContext(), countries);
+            countrySpinner.setAdapter(countryAdapter);
+            countrySpinner.setSelectedIndex(0);
+            countrySpinner.setEnabled(false);
+        }else{
+            actionsListener.getCountries();
+        }
+        if(setting.lastTradePrice != null) {
+            lastTradePriceEditText.setText(setting.lastTradePrice.toString());
+        }
+        if(setting.purchasePercentage != null) {
+            purchasePercentageEditText.setText(setting.purchasePercentage.toString());
+        }
+        if(setting.salePercentage != null) {
+            salePercentageEditText.setText(setting.salePercentage.toString());
+        }
+        if(setting.hourVolume != null) {
+            hourVolumeEditText.setText(setting.hourVolume.toString());
+        }
+        if(setting.activeTraders != null) {
+            activeTradersEditText.setText(setting.activeTraders.toString());
+        }
+        if(setting.marketCap != null) {
+            marketCapEditText.setText(setting.marketCap.toString());
+        }
+        if(setting.dailyTransactions != null) {
+            dailyTransactionsEditText.setText(setting.dailyTransactions.toString());
+        }
+        if(setting.activeAccounts != null) {
+            activeAccountsEditText.setText(setting.activeAccounts.toString());
+        }
+        if(setting.supportedCountries != null) {
+            supportedCountriesEditText.setText(setting.supportedCountries.toString());
+        }
     }
 
     @Override
@@ -166,5 +213,11 @@ public class SettingFragment extends BaseFragment implements SettingContract.Vie
     @Override
     public void settingCreatedSuccessfully() {
         Toast.makeText(getContext(), "Configuracion guardada correctamente", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showCountries(List<Country> countries) {
+        countryAdapter = new CountryAdapter(getContext(), countries);
+        countrySpinner.setAdapter(countryAdapter);
     }
 }

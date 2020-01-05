@@ -1,6 +1,4 @@
-package com.andoresu.cryptoadmin.chargepointdetail.data;
-
-import com.andoresu.cryptoadmin.authorization.data.Country;
+package com.andoresu.cryptoadmin.core.chargepointdetail.data;
 
 import java.util.ArrayList;
 import java.util.List;

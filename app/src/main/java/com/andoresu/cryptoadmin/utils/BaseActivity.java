@@ -101,7 +101,7 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(checkPermissions(this)){
+        if(!checkPermissions(this)){
             showErrorDialog(this, getString(R.string.error_no_permission), (String) null, (dialogInterface, i) -> requestActivityPermissions());
         }
     }

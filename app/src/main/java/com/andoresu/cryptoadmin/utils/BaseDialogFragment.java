@@ -2,8 +2,10 @@ package com.andoresu.cryptoadmin.utils;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.SpannedString;
 import android.text.TextUtils;
@@ -26,42 +29,57 @@ import android.widget.Button;
 
 import com.andoresu.cryptoadmin.R;
 
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.isNightMode;
 import static com.andoresu.cryptoadmin.utils.MyUtils.removeTrailingLineFeed;
 
 @SuppressLint("LogNotTimber")
-public class BaseDialogFragment extends DialogFragment {
+public abstract class BaseDialogFragment extends DialogFragment {
 
-    private static String TAG = "CRYPTO_" + BaseDialogFragment.class.getSimpleName();
+    public static final String TAG = BaseFragment.BASE_TAG + BaseDialogFragment.class.getSimpleName();
 
-    private Integer title;
+    public Integer titleId;
 
-    private Unbinder unbinder;
+    public String title;
 
-    private View view;
+    public Unbinder unbinder;
+
+    public View view;
 
     public Button positiveBtn;
 
     public Button negativeBtn;
 
+    public boolean cancelable = true;
+
+    public AlertDialog.Builder builder;
+
+    public Dialog dialog;
+
     public Unbinder getUnbinder() {
         return unbinder;
     }
-
-//    public String tag;
 
     public void setUnbinder(Unbinder unbinder) {
         this.unbinder = unbinder;
     }
 
-    public Integer getTitle() {
-        return title;
+    public Integer getTitleId() {
+        return titleId;
     }
 
-    public void setTitle(Integer title) {
+    public void setTitleId(Integer titleId) {
+        this.titleId = titleId;
+    }
+
+    public void setTitle(String title){
         this.title = title;
+    }
+
+    public String getTitle(){
+        return title;
     }
 
     @Nullable
@@ -85,26 +103,73 @@ public class BaseDialogFragment extends DialogFragment {
         super.onStart();
         positiveBtn = ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE);
         negativeBtn = ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE);
-        if(isNightMode()){
-            getDialog().getWindow().setBackgroundDrawableResource(R.color.colorCardBackgroundNight);
-        }
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().setCanceledOnTouchOutside(false);
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        View view = getActivity().getLayoutInflater().inflate(getLayoutId(), null);
+        setView(view);
+        setUnbinder(ButterKnife.bind(this, view));
+        builder = getBuilder();
+        builder.setView(view);
+        handleView();
+        dialog = dialog == null ? builder.create() : dialog;
+        return dialog;
+    }
+
+    @LayoutRes
+    public abstract int getLayoutId();
+
+    public abstract void handleView();
+
+    public AlertDialog.Builder getBuilder(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        if(titleId == null && title == null){
+            return builder;
+        }
+        if(titleId != null){
+            builder.setTitle(titleId);
+        }
+        if(title != null){
+            builder.setTitle(title);
+        }
+
+        return builder;
     }
 
     public void show(FragmentTransaction fragmentTransaction){
         try{
-            Log.i(TAG, "show: tag: " + this.getClass().getSimpleName());
-            show(fragmentTransaction, "CRYPTO_" + this.getClass().getSimpleName());
-//            show(fragmentTransaction, tag == null ? this.getClass().getSimpleName() : tag);
+            show(fragmentTransaction, TAG);
         }catch (Exception e){e.printStackTrace();}
     }
 
+
+    public void show(AppCompatActivity activity){
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        removeIfOpened(fragmentManager, fragmentTransaction);
+        fragmentTransaction.addToBackStack(null);
+        show(fragmentTransaction, TAG);
+    }
+
+    public void show(Fragment fragment){
+        FragmentManager fragmentManager = fragment.getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        removeIfOpened(fragmentManager, fragmentTransaction);
+        fragmentTransaction.addToBackStack(null);
+        show(fragmentTransaction, TAG);
+    }
+
+    public void show(DialogFragment fragment){
+        FragmentManager fragmentManager = fragment.getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        removeIfOpened(fragmentManager, fragmentTransaction);
+        fragmentTransaction.addToBackStack(null);
+        show(fragmentTransaction, TAG);
+    }
 
     public static Fragment getInstancedFragment(FragmentManager fragmentManager, String tag){
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
@@ -140,8 +205,12 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public void setDialogSize(Double widthPercentage, Double heightPercentage){
+        setDialogSize(widthPercentage, heightPercentage, dialog);
+    }
 
-        Window window = getDialog().getWindow();
+    public void setDialogSize(Double widthPercentage, Double heightPercentage, Dialog dialog){
+
+        Window window = dialog.getWindow();
         Point size = new Point();
 
         Display display = window.getWindowManager().getDefaultDisplay();
@@ -155,19 +224,13 @@ public class BaseDialogFragment extends DialogFragment {
 
     }
 
-    public AlertDialog.Builder getBuilder(){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        if(title == null){
-            return builder;
-        }
-
-        builder.setTitle(title);
-
-
-        return builder;
-    }
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
+        int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
+        getDialog().getWindow().setLayout(width, height);
+    }*/
 
     public CharSequence getText(int id, Object... args) {
         for(int i = 0; i < args.length; ++i)

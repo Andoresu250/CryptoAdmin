@@ -3,19 +3,12 @@ package com.andoresu.cryptoadmin.client;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
-import com.andoresu.cryptoadmin.core.settings.data.Setting;
 import com.andoresu.cryptoadmin.utils.BaseView;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
-
-import retrofit2.Response;
 
 public class ObserverResponseWhitError<BaseResponse, ErrorResponse> extends ObserverResponse<BaseResponse>{
 

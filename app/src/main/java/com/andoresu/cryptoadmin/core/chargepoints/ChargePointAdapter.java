@@ -15,6 +15,7 @@ import com.andoresu.cryptoadmin.authorization.data.Country;
 import com.andoresu.cryptoadmin.core.chargepoints.data.ChargePoint;
 import com.andoresu.cryptoadmin.core.charges.ChargeAdapter;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
@@ -24,7 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChargePointAdapter extends BaseRecyclerViewAdapter<ChargePoint> {
+public class ChargePointAdapter extends RecyclerViewAdapter<ChargePoint> {
 
     public ChargePointAdapter(Context context, @NonNull ArrayList<ChargePoint> items, OnItemClickListener<ChargePoint> listener) {
         super(context, items, listener);
@@ -48,8 +49,7 @@ public class ChargePointAdapter extends BaseRecyclerViewAdapter<ChargePoint> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<ChargePoint> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<ChargePoint> holder, int position) {
         ChargePointViewHolder viewHolder = (ChargePointViewHolder) holder;
         ChargePoint chargePoint = getItem(position);
         viewHolder.detailChargePointButton.setOnClickListener(view -> listener.onItemClick(chargePoint));

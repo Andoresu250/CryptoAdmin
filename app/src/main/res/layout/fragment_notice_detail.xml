@@ -39,7 +39,7 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/noticeTitleTextInputLayout">
+            app:layout_constraintTop_toBottomOf="@id/noticeTitleTextInputLayout">
 
             <EditText
                 android:id="@+id/noticeBodyEditText"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/noticeBodyTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@id/noticeBodyTextInputLayout"
             tools:ignore="ContentDescription" />
 
         <Button
@@ -70,7 +70,7 @@
             android:text="@string/select_image"
             android:padding="20dp"
             android:drawableStart="@drawable/ic_camera"
-            app:layout_constraintTop_toBottomOf="@+id/noticeImageView"
+            app:layout_constraintTop_toBottomOf="@id/noticeImageView"
             />
 
         <Button
@@ -81,7 +81,7 @@
             android:text="@string/save"
             android:padding="20dp"
             android:drawableStart="@drawable/ic_save"
-            app:layout_constraintTop_toBottomOf="@+id/selectNoticeImageButton"
+            app:layout_constraintTop_toBottomOf="@id/selectNoticeImageButton"
             />
 
     </android.support.constraint.ConstraintLayout>

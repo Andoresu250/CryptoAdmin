@@ -6,11 +6,8 @@ import com.andoresu.cryptoadmin.authorization.data.User;
 import com.andoresu.cryptoadmin.client.ObserverResponse;
 import com.andoresu.cryptoadmin.client.ObserverResponseWhitError;
 import com.andoresu.cryptoadmin.client.ServiceGenerator;
-import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
-import com.andoresu.cryptoadmin.core.charges.data.SettingErrorsResponse;
 import com.andoresu.cryptoadmin.core.profile.data.UserErrors;
 import com.andoresu.cryptoadmin.core.profile.data.UserErrorsResponse;
-import com.andoresu.cryptoadmin.core.settings.data.Setting;
 import com.andoresu.cryptoadmin.security.SecureData;
 
 import java.util.HashMap;

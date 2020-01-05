@@ -14,6 +14,7 @@ import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
 import com.andoresu.cryptoadmin.core.sales.data.Sale;
 import com.andoresu.cryptoadmin.core.sales.data.SalesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -25,12 +26,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SalesFragment extends BaseFragment implements SaleContract.View, SwipeRefreshLayout.OnRefreshListener{
+public class SalesFragment extends RecyclerViewFragment<Sale> implements SaleContract.View, SwipeRefreshLayout.OnRefreshListener{
 
     String TAG = "CRYPTO_" + SalesFragment.class.getSimpleName();
-
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
 
     private static final String ALL_SALES = "Todas las Ventas";
     private static final String PENDING_SALES = "Ventas Pendientes";
@@ -40,23 +38,13 @@ public class SalesFragment extends BaseFragment implements SaleContract.View, Sw
     @BindView(R.id.saleStateSpinner)
     MaterialSpinner saleStateSpinner;
 
-    @BindView(R.id.salesRecyclerView)
-    RecyclerView salesRecyclerView;
-
-    @BindView(R.id.salesSwipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private SaleContract.UserActionsListener actionsListener;
 
     private SaleContract.InteractionListener interactionListener;
 
     private String selectedItem = ALL_SALES;
 
-    private SaleAdapter saleAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
+    private SalesResponse salesResponse;
 
     public SalesFragment(){
         actionsListener = new SalesPresenter(this, getContext());
@@ -78,53 +66,31 @@ public class SalesFragment extends BaseFragment implements SaleContract.View, Sw
         if(bundle != null){}
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sales, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        salesRecyclerView.setLayoutManager(linearLayoutManager);
-        saleAdapter = new SaleAdapter(getContext(), item -> interactionListener.goToSaleDetail(item));
-        salesRecyclerView.setAdapter(saleAdapter);
-        salesRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
+    public void handleView() {
+        super.handleView();
+        viewAdapter = new SaleAdapter(getContext(), item -> interactionListener.goToSaleDetail(item));
+        listRecyclerView.setAdapter(viewAdapter);
+        onRefresh();
         actionsListener.getSales(getSalesOptions());
         saleStateSpinner.setItems(ALL_SALES, PENDING_SALES, APPROVED_SALES, DENIED_SALES);
         saleStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
-            currentPage = 1;
-            saleAdapter.set(new ArrayList<>());
-            Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
-            actionsListener.getSales(getSalesOptions());
+            onRefresh(true);
         });
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_sales;
     }
 
     @Override
     public void showSales(SalesResponse salesResponse) {
-        this.saleAdapter.setSalesResponse(salesResponse);
+        this.salesResponse = salesResponse;
+        viewAdapter.addAll(salesResponse.sales);
+        isEmpty();
     }
-
-    @Override
-    public void showProgressIndicator(boolean active) {
-        swipeRefreshLayout.setRefreshing(active);
-        isLoading = active;
-    }
-
-    @Override
-    public void showGlobalError(ErrorResponse errorResponse) {
-
-    }
-
-    @Override
-    public void onLogoutFinish() {
-
-    }
-
     private Map<String, String> getSalesOptions(){
         Map<String, String> options = new HashMap<>();
         options.put("page", currentPage + "");
@@ -143,37 +109,20 @@ public class SalesFragment extends BaseFragment implements SaleContract.View, Sw
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
+        }
         actionsListener.getSales(getSalesOptions());
+    }
+
+    @Override
+    public int getTotalItems() {
+        return salesResponse.totalCount;
     }
 
     public void setInteractionListener(SaleContract.InteractionListener interactionListener) {
         this.interactionListener = interactionListener;
-    }
-
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                actionsListener.getSales(getSalesOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return saleAdapter.salesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= saleAdapter.salesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
     }
 }

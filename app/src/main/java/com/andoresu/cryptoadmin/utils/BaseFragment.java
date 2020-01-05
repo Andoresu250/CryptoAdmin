@@ -2,26 +2,42 @@ package com.andoresu.cryptoadmin.utils;
 
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.SpannedString;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.removeTrailingLineFeed;
 
-public class BaseFragment extends Fragment implements BaseView{
+public abstract class BaseFragment extends Fragment implements BaseView, OnBackPressed{
 
-    String TAG = "CRYPTO_" + BaseFragment.class.getSimpleName();
+    public static final String BASE_TAG =  "CRYPTO_ADMIN_";
 
-//    @BindView(R.id.baseFragment)
+    public static final String TAG = BASE_TAG + BaseFragment.class.getSimpleName();
+
+    //    @BindView(R.id.baseFragment)
     public View baseFragment;
+
+    @Nullable
+    @BindView(R.id.fragmentLayout)
+    public View fragmentLayout;
+
+    @Nullable
+    @BindView(R.id.progressBar)
+    public View progressBar;
 
     private int viewPagerPosition = 0;
 
@@ -31,7 +47,7 @@ public class BaseFragment extends Fragment implements BaseView{
 
     private boolean isFragmentCreated;
 
-    private String title = "Sin Titulo";
+    private String title = null;
 
     public int getViewPagerPosition() {
         return viewPagerPosition;
@@ -70,16 +86,18 @@ public class BaseFragment extends Fragment implements BaseView{
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setCustomTitle(String title) {
         this.title = title;
     }
+
+    public void setTitle(String title){setCustomTitle(title);}
 
     @Override
     public void onResume() {
         super.onResume();
         setFragmentCreated(true);
-        if(getActivity() != null){
-            getActivity().setTitle(getTitle());
+        if(getActivity() != null && title != null){
+            getActivity().setTitle(title);
         }
     }
 
@@ -87,10 +105,22 @@ public class BaseFragment extends Fragment implements BaseView{
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        if(getActivity() != null){
-            getActivity().setTitle(R.string.app_name);
-        }
     }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayoutId(), container, false);
+        baseFragment = view;
+        setUnbinder(ButterKnife.bind(this, view));
+        handleView();
+        return view;
+    }
+
+    public abstract void handleView();
+
+    @LayoutRes
+    public abstract int getLayoutId();
 
     public CharSequence getText(int id, Object... args) {
         for(int i = 0; i < args.length; ++i)
@@ -104,8 +134,21 @@ public class BaseFragment extends Fragment implements BaseView{
     }
 
     @Override
-    public void showProgressIndicator(boolean active) {
+    public void showMessage(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void showProgressIndicator(boolean active) {
+        if(fragmentLayout != null && progressBar != null){
+            if(active){
+                fragmentLayout.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+            }else{
+                fragmentLayout.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -119,7 +162,5 @@ public class BaseFragment extends Fragment implements BaseView{
     }
 
     @Override
-    public void showMessage(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
+    public void onBackPressed() {}
 }

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/identification_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/personNameTextView"
         />
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/identification_type_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personIdentificationTextView"
+        app:layout_constraintTop_toBottomOf="@id/personIdentificationTextView"
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/country_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personIdentificationTypeTextView"
+        app:layout_constraintTop_toBottomOf="@id/personIdentificationTypeTextView"
         />
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="@string/phone_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personCountryTextView"
+        app:layout_constraintTop_toBottomOf="@id/personCountryTextView"
         />
 
     <Button
@@ -59,9 +59,9 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/personPhoneTextView"
-        app:layout_constraintBottom_toBottomOf="@+id/personPhoneTextView"
-        app:layout_constraintStart_toEndOf="@+id/personPhoneTextView"
+        app:layout_constraintTop_toTopOf="@id/personPhoneTextView"
+        app:layout_constraintBottom_toBottomOf="@id/personPhoneTextView"
+        app:layout_constraintStart_toEndOf="@id/personPhoneTextView"
         android:text="@string/call"
         android:drawableStart="@drawable/ic_phone"
         android:theme="@style/PrimaryButton"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:text="@string/balance_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personPhoneTextView"
+        app:layout_constraintTop_toBottomOf="@id/personPhoneTextView"
         />
 
     <TextView
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:text="@string/identificationFront_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personBalanceTextView"
+        app:layout_constraintTop_toBottomOf="@id/personBalanceTextView"
         />
 
     <ImageView
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personIdentificationFrontTextView"
+        app:layout_constraintTop_toBottomOf="@id/personIdentificationFrontTextView"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:text="@string/identificationBack_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personIdentificationFrontImageView"
+        app:layout_constraintTop_toBottomOf="@id/personIdentificationFrontImageView"
         />
 
     <ImageView
@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personIdentificationBackTextView"
+        app:layout_constraintTop_toBottomOf="@id/personIdentificationBackTextView"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:text="@string/publicReceipt_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personIdentificationBackImageView"
+        app:layout_constraintTop_toBottomOf="@id/personIdentificationBackImageView"
         />
 
     <ImageView
@@ -134,7 +134,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personPublicReceiptTextView"
+        app:layout_constraintTop_toBottomOf="@id/personPublicReceiptTextView"
         tools:ignore="ContentDescription" />
 
 

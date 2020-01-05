@@ -77,11 +77,8 @@ public class NoticeDetailFragment extends BaseFragment implements NoticeDetailCo
         actionsListener = new NoticeDetailPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notice_detail, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
         selectNoticeImageButton.setOnClickListener(view1 -> selectImageFile());
         saveNoticeButton.setOnClickListener(view12 -> {
             updateNotice();
@@ -92,7 +89,11 @@ public class NoticeDetailFragment extends BaseFragment implements NoticeDetailCo
             }
         });
         setData();
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_notice_detail;
     }
 
     private void setNotice(Notice notice) {

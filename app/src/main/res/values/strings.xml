@@ -130,4 +130,24 @@
     <string name="input_accountIban">Iban</string>
     <string name="detail">Ver Detalle</string>
 
+    <string name="calendar">Calendario</string>
+
+    <string name="slycalendar_cancel">Cerrar</string>
+    <string name="slycalendar_save">Guardar</string>
+    <string name="slycalendar_next">Sig</string>
+    <string name="slycalendar_prev">Prev</string>
+    <string name="input_transactionValue">Valor</string>
+    <string name="input_transactionDescription">Descripcion</string>
+    <string name="input_paymentValue2">Valor Cuota</string>
+    <string name="input_paymentAmount">Valor a pagar</string>
+    <string name="pay">Pagar</string>
+    <string name="input_totalProfit">Ganancia Neta</string>
+    <string name="lbl_empty_list">No hay elementos en esta lista</string>
+    <string name="search">Buscar</string>
+
+    <string name="ok">ok</string>
+    <string name="contacts">Contactos</string>
+    <string name="input_contactName">Nombre</string>
+    <string name="input_contactPhone">Telefono</string>
+
 </resources>

@@ -1,10 +1,7 @@
-package com.andoresu.cryptoadmin.chargepointdetail;
-
-import android.net.Uri;
+package com.andoresu.cryptoadmin.core.chargepointdetail;
 
 import com.andoresu.cryptoadmin.authorization.data.Country;
-import com.andoresu.cryptoadmin.chargepointdetail.data.ChargePointErrors;
-import com.andoresu.cryptoadmin.core.btccharges.data.BtcCharge;
+import com.andoresu.cryptoadmin.core.chargepointdetail.data.ChargePointErrors;
 import com.andoresu.cryptoadmin.core.chargepoints.data.ChargePoint;
 import com.andoresu.cryptoadmin.utils.BaseView;
 

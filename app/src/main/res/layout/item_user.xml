@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="@string/email_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+            app:layout_constraintTop_toBottomOf="@id/nameTextView" />
 
         <TextView
             android:id="@+id/stateTextView"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/state_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
+            app:layout_constraintTop_toBottomOf="@id/emailTextView" />
 
 
 

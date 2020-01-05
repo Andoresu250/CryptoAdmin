@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.core.purchase.data.Purchase;
 import com.andoresu.cryptoadmin.core.purchase.data.PurchasesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getText;
 
-public class PurchaseAdapter extends BaseRecyclerViewAdapter<Purchase> {
+public class PurchaseAdapter extends RecyclerViewAdapter<Purchase> {
 
     public static final String TAG = "CRYPTO_" + PurchaseAdapter.class.getSimpleName();
 
@@ -45,21 +46,15 @@ public class PurchaseAdapter extends BaseRecyclerViewAdapter<Purchase> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<Purchase> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<Purchase> holder, int position) {
         PurchaseAdapter.PurchaseViewHolder viewHolder = (PurchaseAdapter.PurchaseViewHolder) holder;
         Purchase purchase = getItem(position);
-        viewHolder.personNameTextView.setText(getText(context, R.string.name_label, purchase.person.fullName));
-        viewHolder.personCountryTextView.setText(getText(context, R.string.country_label , purchase.country.name));
-        viewHolder.purchaseDateTextView.setText(getText(context, R.string.date_label , purchase.getCreatedAt()));
-        viewHolder.purchaseValueTextView.setText(getText(context, R.string.amount_label , purchase.getValue()));
-        viewHolder.purchaseBtcTextView.setText(getText(context, R.string.btc_label, purchase.btc + ""));
-        viewHolder.purchaseStateTextView.setText(getText(context, R.string.state_label , purchase.state));
-    }
-
-    public void setPurchasesResponse(PurchasesResponse purchasesResponse){
-        this.purchasesResponse = purchasesResponse;
-        addAll(purchasesResponse.purchases);
+        viewHolder.personNameTextView.setText(getText(R.string.name_label, purchase.person.fullName));
+        viewHolder.personCountryTextView.setText(getText(R.string.country_label , purchase.country.name));
+        viewHolder.purchaseDateTextView.setText(getText(R.string.date_label , purchase.getCreatedAt()));
+        viewHolder.purchaseValueTextView.setText(getText(R.string.amount_label , purchase.getValue()));
+        viewHolder.purchaseBtcTextView.setText(getText(R.string.btc_label, purchase.btc + ""));
+        viewHolder.purchaseStateTextView.setText(getText(R.string.state_label , purchase.state));
     }
 
     public static class PurchaseViewHolder extends BaseViewHolder<Purchase> {

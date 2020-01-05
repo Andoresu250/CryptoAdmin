@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/amount_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chargeDateTextView"
+        app:layout_constraintTop_toBottomOf="@id/chargeDateTextView"
         />
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/state_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chargeAmountTextView"
+        app:layout_constraintTop_toBottomOf="@id/chargeAmountTextView"
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/evidence_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chargeStateTextView"
+        app:layout_constraintTop_toBottomOf="@id/chargeStateTextView"
         />
 
     <ImageView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chargeEvidenceTextView"
+        app:layout_constraintTop_toBottomOf="@id/chargeEvidenceTextView"
         tools:ignore="ContentDescription" />
 
 </android.support.constraint.ConstraintLayout>

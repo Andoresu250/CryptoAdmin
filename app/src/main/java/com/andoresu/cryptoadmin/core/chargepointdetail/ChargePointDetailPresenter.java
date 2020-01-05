@@ -1,11 +1,10 @@
-package com.andoresu.cryptoadmin.chargepointdetail;
+package com.andoresu.cryptoadmin.core.chargepointdetail;
 
 import android.content.Context;
 
 import com.andoresu.cryptoadmin.authorization.data.Country;
-import com.andoresu.cryptoadmin.authorization.data.User;
-import com.andoresu.cryptoadmin.chargepointdetail.data.ChargePointErrors;
-import com.andoresu.cryptoadmin.chargepointdetail.data.ChargePointErrorsResponse;
+import com.andoresu.cryptoadmin.core.chargepointdetail.data.ChargePointErrors;
+import com.andoresu.cryptoadmin.core.chargepointdetail.data.ChargePointErrorsResponse;
 import com.andoresu.cryptoadmin.client.ObserverResponse;
 import com.andoresu.cryptoadmin.client.ObserverResponseWhitError;
 import com.andoresu.cryptoadmin.client.ServiceGenerator;

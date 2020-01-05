@@ -17,6 +17,7 @@ import com.andoresu.cryptoadmin.client.ErrorResponse;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
 import com.andoresu.cryptoadmin.core.charges.data.ChargesResponse;
 import com.andoresu.cryptoadmin.core.users.UserAdapter;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
@@ -29,12 +30,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChargesFragment extends BaseFragment implements ChargesContract.View, SwipeRefreshLayout.OnRefreshListener{
-
-    String TAG = "CRYPTO_" + ChargesFragment.class.getSimpleName();
-
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
+public class ChargesFragment extends RecyclerViewFragment<Charge> implements ChargesContract.View{
 
     private static final String ALL_CHARGES = "Todas las Recargas";
     private static final String PENDING_CHARGES = "Recargas Pendientes";
@@ -44,27 +40,14 @@ public class ChargesFragment extends BaseFragment implements ChargesContract.Vie
     @BindView(R.id.chargeStateSpinner)
     MaterialSpinner chargeStateSpinner;
 
-    @BindView(R.id.chargesRecyclerView)
-    RecyclerView chargesRecyclerView;
-
-    @BindView(R.id.chargesSwipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private ChargesContract.UserActionsListener actionsListener;
 
     private ChargesContract.InteractionListener interactionListener;
 
     private String selectedItem = ALL_CHARGES;
+    private ChargesResponse chargesResponse;
 
-    private ChargeAdapter chargeAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
-
-    public ChargesFragment(){
-        actionsListener = new ChargesPresenter(this, getContext());
-    }
+    public ChargesFragment(){}
 
     public static ChargesFragment newInstance(ChargesContract.InteractionListener interactionListener) {
         Bundle args = new Bundle();
@@ -80,53 +63,32 @@ public class ChargesFragment extends BaseFragment implements ChargesContract.Vie
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){}
+        actionsListener = new ChargesPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_charges, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        chargesRecyclerView.setLayoutManager(linearLayoutManager);
-        chargeAdapter = new ChargeAdapter(getContext(), item -> interactionListener.goToChargeDetail(item));
-        chargesRecyclerView.setAdapter(chargeAdapter);
-        chargesRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
-        actionsListener.getCharges(getChargesOptions());
+    public void handleView() {
+        super.handleView();
+        viewAdapter = new ChargeAdapter(getContext(), item -> interactionListener.goToChargeDetail(item));
+        listRecyclerView.setAdapter(viewAdapter);
+        onRefresh();
         chargeStateSpinner.setItems(ALL_CHARGES, PENDING_CHARGES, APPROVED_CHARGES, DENIED_CHARGES);
         chargeStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
-            currentPage = 1;
-            chargeAdapter.set(new ArrayList<>());
-            Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
-            actionsListener.getCharges(getChargesOptions());
+            onRefresh(true);
         });
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_charges;
     }
 
     @Override
     public void showCharges(ChargesResponse chargesResponse) {
-        this.chargeAdapter.setChargesResponse(chargesResponse);
-    }
-
-    @Override
-    public void showProgressIndicator(boolean active) {
-        swipeRefreshLayout.setRefreshing(active);
-        isLoading = active;
-    }
-
-    @Override
-    public void showGlobalError(ErrorResponse errorResponse) {
-
-    }
-
-    @Override
-    public void onLogoutFinish() {
-
+        this.chargesResponse = chargesResponse;
+        viewAdapter.addAll(chargesResponse.charges);
+        isEmpty();
     }
 
     private Map<String, String> getChargesOptions(){
@@ -147,37 +109,20 @@ public class ChargesFragment extends BaseFragment implements ChargesContract.Vie
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
+        }
         actionsListener.getCharges(getChargesOptions());
+    }
+
+    @Override
+    public int getTotalItems() {
+        return chargesResponse.totalCount;
     }
 
     public void setInteractionListener(ChargesContract.InteractionListener interactionListener) {
         this.interactionListener = interactionListener;
-    }
-
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                actionsListener.getCharges(getChargesOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return chargeAdapter.chargesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= chargeAdapter.chargesResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
     }
 }

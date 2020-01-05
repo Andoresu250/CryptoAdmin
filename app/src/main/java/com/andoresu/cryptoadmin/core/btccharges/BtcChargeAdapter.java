@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.core.btccharges.data.BtcCharge;
 import com.andoresu.cryptoadmin.core.btccharges.data.BtcChargesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getText;
 
 
-public class BtcChargeAdapter extends BaseRecyclerViewAdapter<BtcCharge> {
+public class BtcChargeAdapter extends RecyclerViewAdapter<BtcCharge> {
 
     public static final String TAG = "CRYPTO_" + BtcChargeAdapter.class.getSimpleName();
 
@@ -46,20 +47,14 @@ public class BtcChargeAdapter extends BaseRecyclerViewAdapter<BtcCharge> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<BtcCharge> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<BtcCharge> holder, int position) {
         ChargeViewHolder viewHolder = (ChargeViewHolder) holder;
         BtcCharge btcCharge = getItem(position);
-        viewHolder.personNameTextView.setText(getText(context, R.string.name_label, btcCharge.person.fullName));
-        viewHolder.personCountryTextView.setText(getText(context, R.string.country_label , btcCharge.country.name));
-        viewHolder.chargeDateTextView.setText(getText(context, R.string.date_label , btcCharge.getCreatedAt()));
-        viewHolder.chargeAmountTextView.setText(getText(context, R.string.amount_label , btcCharge.getAmount()));
-        viewHolder.chargeStateTextView.setText(getText(context, R.string.state_label , btcCharge.state));
-    }
-
-    public void setBtcChargesResponse(BtcChargesResponse btcChargesResponse){
-        this.btcChargesResponse = btcChargesResponse;
-        addAll(btcChargesResponse.charges);
+        viewHolder.personNameTextView.setText(getText(R.string.name_label, btcCharge.person.fullName));
+        viewHolder.personCountryTextView.setText(getText(R.string.country_label , btcCharge.country.name));
+        viewHolder.chargeDateTextView.setText(getText(R.string.date_label , btcCharge.getCreatedAt()));
+        viewHolder.chargeAmountTextView.setText(getText(R.string.amount_label , btcCharge.getAmount()));
+        viewHolder.chargeStateTextView.setText(getText(R.string.state_label , btcCharge.state));
     }
 
     public static class ChargeViewHolder extends BaseViewHolder<BtcCharge> {

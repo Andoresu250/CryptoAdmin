@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.andoresu.cryptoadmin.R;
+import com.andoresu.cryptoadmin.authorization.data.User;
 import com.andoresu.cryptoadmin.authorization.login.data.UsersResponse;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -25,13 +27,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UsersFragment extends BaseFragment implements UsersContract.View, SwipeRefreshLayout.OnRefreshListener{
+public class UsersFragment extends RecyclerViewFragment<User> implements UsersContract.View, SwipeRefreshLayout.OnRefreshListener{
 
     String TAG = "CRYPTO_" + UsersFragment.class.getSimpleName();
-
-    private static final int PAGE_START = 1;
-    public static final int PER_PAGE = 15;
-    private boolean isLoading = false;
 
     private static final String ALL_USERS = "Todos los usuarios";
     private static final String ACTIVATED_USERS = "Usuarios Activos";
@@ -40,26 +38,16 @@ public class UsersFragment extends BaseFragment implements UsersContract.View, S
     @BindView(R.id.userStateSpinner)
     MaterialSpinner userStateSpinner;
 
-    @BindView(R.id.usersRecyclerView)
-    RecyclerView usersRecyclerView;
-
-    @BindView(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private UsersContract.UserActionsListener actionsListener;
 
     private UsersContract.InteractionListener interactionListener;
 
     private String selectedItem = ALL_USERS;
 
-    private UserAdapter userAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
+    private UsersResponse usersResponse;
 
     public UsersFragment(){
-        actionsListener = new UsersPresenter(this, getContext());
+
     }
 
     public static UsersFragment newInstance(@NonNull UsersContract.InteractionListener interactionListener) {
@@ -76,53 +64,33 @@ public class UsersFragment extends BaseFragment implements UsersContract.View, S
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){}
+        actionsListener = new UsersPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_users, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        usersRecyclerView.setLayoutManager(linearLayoutManager);
-        userAdapter = new UserAdapter(getContext(), item -> interactionListener.goToUserDetail(item));
-        usersRecyclerView.setAdapter(userAdapter);
-        usersRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
+    public void handleView() {
+        super.handleView();
+        viewAdapter = new UserAdapter(getContext(), item -> interactionListener.goToUserDetail(item));
+        listRecyclerView.setAdapter(viewAdapter);
+        onRefresh();
         actionsListener.getUsers(getUsersOptions());
         userStateSpinner.setItems(ALL_USERS, ACTIVATED_USERS, DEACTIVATED_USERS);
         userStateSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view1, position, id, item) -> {
-            currentPage = 1;
-            Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
             selectedItem = item;
-            userAdapter.set(new ArrayList<>());
-            actionsListener.getUsers(getUsersOptions());
+            onRefresh(true);
         });
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_users;
     }
 
     @Override
     public void showUsers(UsersResponse usersResponse) {
-        this.userAdapter.setUsersResponse(usersResponse);
-    }
-
-    @Override
-    public void showProgressIndicator(boolean active) {
-        swipeRefreshLayout.setRefreshing(active);
-        isLoading = active;
-    }
-
-    @Override
-    public void showGlobalError(ErrorResponse errorResponse) {
-
-    }
-
-    @Override
-    public void onLogoutFinish() {
-
+        this.usersResponse = usersResponse;
+        viewAdapter.addAll(usersResponse.users);
+        isEmpty();
     }
 
     private Map<String, String> getUsersOptions(){
@@ -141,37 +109,21 @@ public class UsersFragment extends BaseFragment implements UsersContract.View, S
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
+        }
         actionsListener.getUsers(getUsersOptions());
+    }
+
+    @Override
+    public int getTotalItems() {
+        return usersResponse.totalCount;
     }
 
     public void setInteractionListener(UsersContract.InteractionListener interactionListener) {
         this.interactionListener = interactionListener;
     }
 
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                actionsListener.getUsers(getUsersOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return userAdapter.usersResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= userAdapter.usersResponse.getTotalPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
-    }
 }

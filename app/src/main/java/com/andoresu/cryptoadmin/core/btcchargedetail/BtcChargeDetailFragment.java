@@ -111,14 +111,15 @@ public class BtcChargeDetailFragment extends BaseFragment implements BtcChargeDe
         actionsListener = new BtcChargeDetailPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_btc_charge_detail, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
         ButterKnife.apply(viewsToHide, HIDE_VIEW);
         setData();
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_btc_charge_detail;
     }
 
     @Override

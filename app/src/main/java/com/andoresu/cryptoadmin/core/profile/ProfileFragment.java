@@ -91,15 +91,16 @@ public class ProfileFragment extends BaseFragment implements ProfileContract.Vie
         actionsListener = new ProfilePresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
         actionsListener.getUser();
         saveUserButton.setOnClickListener(view1 -> actionsListener.updateUser(buildUser()));
         changeUserPasswordButton.setOnClickListener(view2 -> actionsListener.changeUserPassword(buildUser()));
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_profile;
     }
 
     @Override

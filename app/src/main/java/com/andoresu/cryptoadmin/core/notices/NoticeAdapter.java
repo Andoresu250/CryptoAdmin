@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.core.notices.data.Notice;
 import com.andoresu.cryptoadmin.core.notices.data.NoticesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getText;
 
-public class NoticeAdapter extends BaseRecyclerViewAdapter<Notice> {
+public class NoticeAdapter extends RecyclerViewAdapter<Notice> {
 
     public NoticesResponse noticesResponse;
 
@@ -42,18 +43,13 @@ public class NoticeAdapter extends BaseRecyclerViewAdapter<Notice> {
         return new NoticeAdapter.NoticeViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<Notice> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<Notice> holder, int position) {
         NoticeAdapter.NoticeViewHolder viewHolder = (NoticeAdapter.NoticeViewHolder) holder;
         Notice notice = getItem(position);
         viewHolder.noticeTitleTextView.setText(notice.title);
         viewHolder.noticeBodyTextView.setText(notice.body);
-    }
-
-    public void setNoticesResponse(NoticesResponse noticesResponse){
-        this.noticesResponse = noticesResponse;
-        addAll(noticesResponse.blogs);
     }
 
     public static class NoticeViewHolder extends BaseViewHolder<Notice> {

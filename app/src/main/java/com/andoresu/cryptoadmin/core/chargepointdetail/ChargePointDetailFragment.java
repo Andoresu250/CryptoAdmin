@@ -1,4 +1,4 @@
-package com.andoresu.cryptoadmin.chargepointdetail;
+package com.andoresu.cryptoadmin.core.chargepointdetail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +13,7 @@ import android.widget.TextView;
 
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.authorization.data.Country;
-import com.andoresu.cryptoadmin.chargepointdetail.data.ChargePointErrors;
-import com.andoresu.cryptoadmin.core.btcchargedetail.BtcChargeDetailPresenter;
+import com.andoresu.cryptoadmin.core.chargepointdetail.data.ChargePointErrors;
 import com.andoresu.cryptoadmin.core.chargepoints.CountryAdapter;
 import com.andoresu.cryptoadmin.core.chargepoints.data.ChargePoint;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
@@ -25,7 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getFirst;
 
 public class ChargePointDetailFragment extends BaseFragment implements ChargePointDetailContrant.View {
@@ -105,11 +103,8 @@ public class ChargePointDetailFragment extends BaseFragment implements ChargePoi
         actionsListener = new ChargePointDetailPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_charge_point_detail, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
         actionsListener.getCountries();
         saveChargePointButton.setOnClickListener(view1 -> {
             setChargePointData();
@@ -120,7 +115,11 @@ public class ChargePointDetailFragment extends BaseFragment implements ChargePoi
             }
         });
         setData();
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_charge_point_detail;
     }
 
     private void setData() {

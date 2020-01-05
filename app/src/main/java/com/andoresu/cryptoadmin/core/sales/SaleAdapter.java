@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.core.sales.data.Sale;
 import com.andoresu.cryptoadmin.core.sales.data.SalesResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 import static com.andoresu.cryptoadmin.utils.MyUtils.HIDE_VIEW;
 import static com.andoresu.cryptoadmin.utils.MyUtils.getText;
 
-public class SaleAdapter extends BaseRecyclerViewAdapter<Sale> {
+public class SaleAdapter extends RecyclerViewAdapter<Sale> {
 
     public static final String TAG = "CRYPTO_" + SaleAdapter.class.getSimpleName();
 
@@ -45,16 +46,15 @@ public class SaleAdapter extends BaseRecyclerViewAdapter<Sale> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<Sale> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<Sale> holder, int position) {
         SaleAdapter.SaleViewHolder viewHolder = (SaleAdapter.SaleViewHolder) holder;
         Sale sale = getItem(position);
-        viewHolder.personNameTextView.setText(getText(context, R.string.name_label, sale.person.fullName));
-        viewHolder.personCountryTextView.setText(getText(context, R.string.country_label , sale.country.name));
-        viewHolder.saleDateTextView.setText(getText(context, R.string.date_label , sale.getCreatedAt()));
-        viewHolder.saleValueTextView.setText(getText(context, R.string.amount_label , sale.getValue()));
-        viewHolder.saleBtcTextView.setText(getText(context, R.string.btc_label, sale.btc + ""));
-        viewHolder.saleStateTextView.setText(getText(context, R.string.state_label , sale.state));
+        viewHolder.personNameTextView.setText(getText(R.string.name_label, sale.person.fullName));
+        viewHolder.personCountryTextView.setText(getText(R.string.country_label , sale.country.name));
+        viewHolder.saleDateTextView.setText(getText(R.string.date_label , sale.getCreatedAt()));
+        viewHolder.saleValueTextView.setText(getText(R.string.amount_label , sale.getValue()));
+        viewHolder.saleBtcTextView.setText(getText(R.string.btc_label, sale.btc + ""));
+        viewHolder.saleStateTextView.setText(getText(R.string.state_label , sale.state));
     }
 
     public void setSalesResponse(SalesResponse salesResponse){

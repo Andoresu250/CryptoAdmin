@@ -10,19 +10,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.authorization.data.User;
 import com.andoresu.cryptoadmin.authorization.login.LoginActivity;
-import com.andoresu.cryptoadmin.chargepointdetail.ChargePointDetailContrant;
-import com.andoresu.cryptoadmin.chargepointdetail.ChargePointDetailFragment;
+import com.andoresu.cryptoadmin.core.chargepointdetail.ChargePointDetailFragment;
 import com.andoresu.cryptoadmin.client.ErrorResponse;
 import com.andoresu.cryptoadmin.core.btcchargedetail.BtcChargeDetailFragment;
 import com.andoresu.cryptoadmin.core.btccharges.BtcChargesContract;
@@ -35,7 +32,7 @@ import com.andoresu.cryptoadmin.core.charges.ChargesContract;
 import com.andoresu.cryptoadmin.core.charges.ChargesFragment;
 import com.andoresu.cryptoadmin.core.chargedetail.ChargeDetailFragment;
 import com.andoresu.cryptoadmin.core.charges.data.Charge;
-import com.andoresu.cryptoadmin.core.charges.data.SettingErrors;
+import com.andoresu.cryptoadmin.core.contacts.ContactsFragment;
 import com.andoresu.cryptoadmin.core.noticedetail.NoticeDetailFragment;
 import com.andoresu.cryptoadmin.core.notices.NoticesContract;
 import com.andoresu.cryptoadmin.core.notices.NoticesFragment;
@@ -50,18 +47,16 @@ import com.andoresu.cryptoadmin.core.sales.SaleContract;
 import com.andoresu.cryptoadmin.core.sales.SalesFragment;
 import com.andoresu.cryptoadmin.core.sales.data.Sale;
 import com.andoresu.cryptoadmin.core.saledetail.SaleDetailFragment;
-import com.andoresu.cryptoadmin.core.settings.SettingFragment;
+import com.andoresu.cryptoadmin.core.setting.SettingsContract;
+import com.andoresu.cryptoadmin.core.setting.SettingsFragment;
+import com.andoresu.cryptoadmin.core.settingdetail.SettingFragment;
+import com.andoresu.cryptoadmin.core.settingdetail.data.Setting;
 import com.andoresu.cryptoadmin.core.userdetail.UserDetailFragment;
 import com.andoresu.cryptoadmin.core.users.UsersContract;
 import com.andoresu.cryptoadmin.core.users.UsersFragment;
 import com.andoresu.cryptoadmin.security.SecureData;
 import com.andoresu.cryptoadmin.utils.BaseActivity;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,7 +70,7 @@ public class MainActivity extends BaseActivity implements
         ChargesContract.InteractionListener,
         PurchaseContract.InteractionListener,
         SaleContract.InteractionListener,
-        ProfileContract.InteractionListener, NoticesContract.InteractionListener, BtcChargesContract.InteractionListener, ChargePointsContract.InteractionListener {
+        ProfileContract.InteractionListener, NoticesContract.InteractionListener, BtcChargesContract.InteractionListener, ChargePointsContract.InteractionListener, SettingsContract.InteractionListener {
 
     String TAG = "CRYPTO_" + MainActivity.class.getSimpleName();
 
@@ -123,7 +118,7 @@ public class MainActivity extends BaseActivity implements
 
         actionsListener = new MainPresenter(this, this, SecureData.getToken());
 
-        setChargePointsFragment();
+        setContactsFragment();
 
     }
 
@@ -141,27 +136,27 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        menu.clear();
-
-        menu.add(MENU_GROUP_ID, ITEM_MENU_LOGOUT_ID, Menu.NONE, getText(R.string.logout));
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-            case ITEM_MENU_LOGOUT_ID:
-                actionsListener.logout();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//
+//        menu.clear();
+//
+//        menu.add(MENU_GROUP_ID, ITEM_MENU_LOGOUT_ID, Menu.NONE, getText(R.string.logout));
+//
+//        return super.onPrepareOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()){
+//            case ITEM_MENU_LOGOUT_ID:
+//                actionsListener.logout();
+//                break;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -188,8 +183,11 @@ public class MainActivity extends BaseActivity implements
             case R.id.navNotices:
                 setNoticesFragment();
                 break;
+            case R.id.navContacts:
+                setContactsFragment();
+                break;
             case R.id.navSettings:
-                setSettingFragment();
+                setSettingsFragment();
                 break;
             case R.id.navChargePoints:
                 setChargePointsFragment();
@@ -204,6 +202,11 @@ public class MainActivity extends BaseActivity implements
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setContactsFragment() {
+        ContactsFragment fragment = ContactsFragment.newInstance();
+        changeFragment(fragment);
     }
 
     @Override
@@ -303,9 +306,14 @@ public class MainActivity extends BaseActivity implements
         changeFragment(noticeDetailFragment);
     }
 
-    private void setSettingFragment(){
-        SettingFragment settingFragment = SettingFragment.newInstance();
+    private void setSettingFragment(Setting setting){
+        SettingFragment settingFragment = SettingFragment.newInstance(setting);
         changeFragment(settingFragment);
+    }
+
+    private void setSettingsFragment(){
+        SettingsFragment fragment = SettingsFragment.newInstance(this);
+        changeFragment(fragment);
     }
 
     private void setProfileFragment(){
@@ -352,6 +360,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void goToChargePoint(ChargePoint chargePoint) {
         setChargePointDetailFragment(chargePoint);
+    }
+
+    @Override
+    public void goToSettingDetail(Setting setting) {
+        setSettingFragment(setting);
     }
 
 

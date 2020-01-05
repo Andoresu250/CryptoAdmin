@@ -98,14 +98,15 @@ public class ChargeDetailFragment extends BaseFragment implements ChargeDetailCo
         actionsListener = new ChargeDetailPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_charge_detail, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
+    public void handleView() {
         ButterKnife.apply(viewsToHide, HIDE_VIEW);
         setData();
-        return view;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_charge_detail;
     }
 
     @Override

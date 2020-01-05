@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.authorization.data.User;
 import com.andoresu.cryptoadmin.authorization.login.data.UsersResponse;
+import com.andoresu.cryptoadmin.list.RecyclerViewAdapter;
 import com.andoresu.cryptoadmin.utils.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 
 import static com.andoresu.cryptoadmin.utils.MyUtils.getText;
 
-public class UserAdapter extends BaseRecyclerViewAdapter<User> {
+public class UserAdapter extends RecyclerViewAdapter<User> {
 
     public UsersResponse usersResponse;
 
@@ -41,13 +42,12 @@ public class UserAdapter extends BaseRecyclerViewAdapter<User> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<User> holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void setData(BaseViewHolder<User> holder, int position) {
         UserViewHolder viewHolder = (UserViewHolder) holder;
         User user = getItem(position);
-        viewHolder.nameTextView.setText(getText(context, R.string.name_label, user.profile.fullName));
-        viewHolder.emailTextView.setText(getText(context, R.string.email_label, user.email));
-        viewHolder.stateTextView.setText(getText(context, R.string.state_label, user.state));
+        viewHolder.nameTextView.setText(getText(R.string.name_label, user.profile.fullName));
+        viewHolder.emailTextView.setText(getText(R.string.email_label, user.email));
+        viewHolder.stateTextView.setText(getText(R.string.state_label, user.state));
     }
 
     public void setUsersResponse(UsersResponse usersResponse){

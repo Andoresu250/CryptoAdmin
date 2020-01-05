@@ -37,7 +37,7 @@
             android:textSize="20sp"
             android:maxLines="3"
             android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@+id/noticeTitleTextView"
+            app:layout_constraintTop_toBottomOf="@id/noticeTitleTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />

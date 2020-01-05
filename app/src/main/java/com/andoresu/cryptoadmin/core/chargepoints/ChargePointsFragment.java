@@ -15,6 +15,8 @@ import com.andoresu.cryptoadmin.R;
 import com.andoresu.cryptoadmin.authorization.data.Country;
 import com.andoresu.cryptoadmin.authorization.data.Person;
 import com.andoresu.cryptoadmin.core.chargepoints.data.ChargePoint;
+import com.andoresu.cryptoadmin.core.settingdetail.data.Setting;
+import com.andoresu.cryptoadmin.list.RecyclerViewFragment;
 import com.andoresu.cryptoadmin.utils.BaseFragment;
 import com.andoresu.cryptoadmin.utils.PaginationScrollListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -28,31 +30,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChargePointsFragment extends BaseFragment implements ChargePointsContract.View,  SwipeRefreshLayout.OnRefreshListener{
+public class ChargePointsFragment  extends RecyclerViewFragment<ChargePoint> implements ChargePointsContract.View{
 
     String TAG = "CRYPTO_" + ChargePointsFragment.class.getSimpleName();
-
-    private static final int PAGE_START = 1;
-    private boolean isLoading = false;
 
     @BindView(R.id.countrySpinner)
     MaterialSpinner countrySpinner;
 
-    @BindView(R.id.chargePointsRecyclerView)
-    RecyclerView chargePointsRecyclerView;
-
-    @BindView(R.id.chargePointsSwipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private ChargePointsContract.UserActionsListener actionsListener;
 
     private ChargePointsContract.InteractionListener interactionListener;
-
-    private ChargePointAdapter chargePointAdapter;
-
-    private LinearLayoutManager linearLayoutManager;
-
-    private int currentPage = PAGE_START;
 
     private CountryAdapter countryAdapter;
 
@@ -76,21 +63,12 @@ public class ChargePointsFragment extends BaseFragment implements ChargePointsCo
         actionsListener = new ChargePointsPresenter(this, getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_charge_points, container, false);
-        setUnbinder(ButterKnife.bind(this, view));
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        linearLayoutManager = new LinearLayoutManager(this.getContext(), 1, false);
-        chargePointsRecyclerView.setLayoutManager(linearLayoutManager);
-        chargePointAdapter = new ChargePointAdapter(getContext(), item -> interactionListener.goToChargePoint(item));
-        chargePointsRecyclerView.setAdapter(chargePointAdapter);
-        chargePointsRecyclerView.addOnScrollListener(getPaginationScrollListener());
-
-        actionsListener.getChargePoints(getChargePointsOptions());
+    public void handleView() {
+        super.handleView();
+        viewAdapter = new ChargePointAdapter(getContext(), item -> interactionListener.goToChargePoint(item));
+        listRecyclerView.setAdapter(viewAdapter);
+        onRefresh();
         countryAdapter = new CountryAdapter(getContext());
         countrySpinner.setAdapter(countryAdapter);
         countrySpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<Country>) (view1, position, id, item) -> {
@@ -99,12 +77,14 @@ public class ChargePointsFragment extends BaseFragment implements ChargePointsCo
             }else{
                 selectedCountry = item;
             }
-//            Snackbar.make(view1, "Cargando " + item, Snackbar.LENGTH_LONG).show();
-            actionsListener.getChargePoints(getChargePointsOptions());
+            onRefresh();
         });
         actionsListener.getCountries();
+    }
 
-        return view;
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_charge_points;
     }
 
     @OnClick(R.id.addChargePointFloatingActionButton)
@@ -117,13 +97,23 @@ public class ChargePointsFragment extends BaseFragment implements ChargePointsCo
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(boolean clear) {
+        super.onRefresh(clear);
+        if(clear){
+            viewAdapter.set(new ArrayList<>());
+        }
         actionsListener.getChargePoints(getChargePointsOptions());
     }
 
+//    @Override
+//    public int getTotalItems() {
+//        return settingsResponse.totalCount;
+//    }
+
     @Override
     public void showChargePoints(List<ChargePoint> chargePoints) {
-        this.chargePointAdapter.set(chargePoints);
+        viewAdapter.addAll(chargePoints);
+        isEmpty();
     }
 
     @Override
@@ -136,11 +126,6 @@ public class ChargePointsFragment extends BaseFragment implements ChargePointsCo
         countrySpinner.setAdapter(countryAdapter);
     }
 
-    @Override
-    public void showProgressIndicator(boolean active) {
-        swipeRefreshLayout.setRefreshing(active);
-        isLoading = active;
-    }
 
     private Map<String, String> getChargePointsOptions(){
         Map<String, String> options = new HashMap<>();
@@ -151,29 +136,4 @@ public class ChargePointsFragment extends BaseFragment implements ChargePointsCo
         return options;
     }
 
-    private PaginationScrollListener getPaginationScrollListener(){
-        return new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-//                currentPage++;
-                actionsListener.getChargePoints(getChargePointsOptions());
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return 1;
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return currentPage >= 1;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        };
-    }
 }
